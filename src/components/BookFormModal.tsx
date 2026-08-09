@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, BookPlus, Save } from 'lucide-react';
+import { X, BookPlus, Save, Upload, Link as LinkIcon, Trash2 } from 'lucide-react';
 import { useBookContext } from '../context/BookContext';
 import type { Category } from '../types/book';
 
@@ -16,6 +16,8 @@ export const BookFormModal: React.FC = () => {
 
   const isOpen = isAddModalOpen || editingBook !== null;
   const isEditing = editingBook !== null;
+
+  const [uploadType, setUploadType] = useState<'url' | 'file'>('file');
 
   const [formData, setFormData] = useState({
     title: '',
@@ -62,6 +64,22 @@ export const BookFormModal: React.FC = () => {
   const handleClose = () => {
     setIsAddModalOpen(false);
     setEditingBook(null);
+  };
+
+  // Bilgisayardan Fotoğraf Yükleme (Base64 Dönüştürme ve LocalStorage'a Kaydetme)
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 2 * 1024 * 1024) {
+        alert('Görsel boyutu 2MB dan küçük olmalıdır!');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData(prev => ({ ...prev, coverImage: reader.result as string }));
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -180,25 +198,73 @@ export const BookFormModal: React.FC = () => {
             </div>
           </div>
 
-          {/* Fotoğraf URL */}
+          {/* Kapak Fotoğrafı Seçimi (URL veya Bilgisayardan Yükleme) */}
           <div>
-            <label className="block text-xs font-bold text-[#543d2b] uppercase mb-1">Kapak Fotoğrafı URL</label>
-            <div className="flex space-x-2">
-              <input
-                type="url"
-                value={formData.coverImage}
-                onChange={e => setFormData({ ...formData, coverImage: e.target.value })}
-                placeholder="https://images.unsplash.com/..."
-                className="flex-1 px-3.5 py-2.5 bg-white border border-[#e2d5c3] rounded-xl text-[#3d2b1f] placeholder-[#a89485] focus:outline-none focus:ring-2 focus:ring-[#8b5e34] text-sm"
-              />
+            <div className="flex items-center justify-between mb-1">
+              <label className="block text-xs font-bold text-[#543d2b] uppercase">Kapak Fotoğrafı</label>
+              <div className="flex space-x-1 text-xs">
+                <button
+                  type="button"
+                  onClick={() => setUploadType('file')}
+                  className={`px-2 py-0.5 rounded-md font-semibold ${uploadType === 'file' ? 'bg-[#6f4e37] text-white' : 'text-[#785942] hover:bg-[#e9dfce]'}`}
+                >
+                  Dosya Yükle
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setUploadType('url')}
+                  className={`px-2 py-0.5 rounded-md font-semibold ${uploadType === 'url' ? 'bg-[#6f4e37] text-white' : 'text-[#785942] hover:bg-[#e9dfce]'}`}
+                >
+                  URL Linki
+                </button>
+              </div>
             </div>
+
+            {uploadType === 'file' ? (
+              <div className="relative">
+                <label className="flex flex-col items-center justify-center w-full h-28 border-2 border-dashed border-[#d8cbb7] hover:border-[#8b5e34] rounded-xl cursor-pointer bg-white transition p-4 text-center">
+                  <Upload className="h-6 w-6 text-[#8b5e34] mb-1" />
+                  <span className="text-xs font-semibold text-[#543d2b]">Bilgisayarınızdan Resim Seçin</span>
+                  <span className="text-[10px] text-[#8c7462] mt-0.5">PNG, JPG, WEBP (Max 2MB)</span>
+                  <input type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
+                </label>
+              </div>
+            ) : (
+              <div className="flex space-x-2">
+                <div className="relative flex-1">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-[#8c7462]">
+                    <LinkIcon className="h-4 w-4" />
+                  </div>
+                  <input
+                    type="url"
+                    value={formData.coverImage}
+                    onChange={e => setFormData({ ...formData, coverImage: e.target.value })}
+                    placeholder="https://images.unsplash.com/..."
+                    className="w-full pl-9 pr-3.5 py-2.5 bg-white border border-[#e2d5c3] rounded-xl text-[#3d2b1f] placeholder-[#a89485] focus:outline-none focus:ring-2 focus:ring-[#8b5e34] text-sm"
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
-          {/* Canlı Fotoğraf Önizlemesi */}
+          {/* Fotoğraf Önizlemesi ve Silme */}
           {formData.coverImage && (
-            <div className="flex items-center space-x-3 p-2.5 bg-[#eaf3ed] rounded-xl border border-[#cce3d3]">
-              <img src={formData.coverImage} alt="Önizleme" className="w-12 h-16 object-cover rounded-lg shadow-sm" />
-              <span className="text-xs text-[#2e6f40] font-bold">Fotoğraf Önizleme Başarılı</span>
+            <div className="flex items-center justify-between p-2.5 bg-[#eaf3ed] rounded-xl border border-[#cce3d3]">
+              <div className="flex items-center space-x-3">
+                <img src={formData.coverImage} alt="Önizleme" className="w-12 h-16 object-cover rounded-lg shadow-sm border border-[#b2d8bc]" />
+                <div>
+                  <span className="text-xs text-[#2e6f40] font-bold block">Resim Yüklendi ve Hazır</span>
+                  <span className="text-[10px] text-[#428154]">LocalStorage hafızasına kaydedilecek</span>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setFormData({ ...formData, coverImage: '' })}
+                className="p-1.5 text-rose-600 hover:bg-rose-100 rounded-lg transition"
+                title="Resmi Kaldır"
+              >
+                <Trash2 className="h-4 w-4" />
+              </button>
             </div>
           )}
 
