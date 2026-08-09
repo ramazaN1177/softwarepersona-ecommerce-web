@@ -1,0 +1,369 @@
+import React from 'react';
+import { 
+  TrendingUp, 
+  ShoppingBag, 
+  DollarSign, 
+  Package, 
+  Trophy, 
+  ArrowUpRight, 
+  Clock,
+  PieChart as PieChartIcon,
+  BookOpen,
+  Plus
+} from 'lucide-react';
+import { useBookContext } from '../context/BookContext';
+import { Link } from 'react-router-dom';
+
+export const DashboardPage: React.FC = () => {
+  const { books, setIsAddModalOpen } = useBookContext();
+
+  // Mock Sales Data Calculations based on actual books list
+  const totalStock = books.reduce((acc, b) => acc + (b.stock || 0), 0);
+  const totalValuation = books.reduce((acc, b) => acc + (b.price * (b.stock || 1)), 0);
+
+  // Simulated Sales Figures
+  const monthlyRevenue = 148450;
+  const monthlySoldUnits = 1240;
+  const avgOrderValue = 340;
+
+  // Monthly Sales Bar Data
+  const monthlyData = [
+    { month: 'Ocak', revenue: 84000, height: '45%' },
+    { month: 'Şubat', revenue: 92000, height: '52%' },
+    { month: 'Mart', revenue: 105000, height: '60%' },
+    { month: 'Nisan', revenue: 118000, height: '70%' },
+    { month: 'Mayıs', revenue: 110000, height: '65%' },
+    { month: 'Haziran', revenue: 132000, height: '82%' },
+    { month: 'Temmuz', revenue: 128000, height: '78%' },
+    { month: 'Ağustos', revenue: 148450, height: '95%' },
+  ];
+
+  // Category Share Breakdown
+  const categoryStats = [
+    { name: 'Roman & Edebiyat', percent: 35, count: 434, color: 'bg-[#6f4e37]' },
+    { name: 'Yazılım & Teknoloji', percent: 28, count: 347, color: 'bg-[#8b5e34]' },
+    { name: 'Kişisel Gelişim', percent: 20, count: 248, color: 'bg-[#a06d3b]' },
+    { name: 'Tarih & Felsefe', percent: 12, count: 148, color: 'bg-[#c58b4e]' },
+    { name: 'Bilim Kurgu & Fantastik', percent: 5, count: 63, color: 'bg-[#d8cbb7]' }
+  ];
+
+  // Top Selling Books
+  const topSellers = books.slice(0, 5).map((book, idx) => ({
+    rank: idx + 1,
+    book,
+    soldCount: Math.floor(180 - idx * 28 + (book.price % 30)),
+    totalRevenue: Math.floor((180 - idx * 28 + (book.price % 30)) * book.price)
+  }));
+
+  // Recent Orders Activity with Ramazan Çavuş
+  const recentOrders = [
+    { id: 'ORD-9842', customer: 'Ramazan Çavuş', book: books[0]?.title || 'Clean Code', date: 'Bugün, 14:22', amount: books[0]?.price || 450, status: 'Tamamlandı' },
+    { id: 'ORD-9841', customer: 'Zeynep Kaya', book: books[1]?.title || 'Atomik Alışkanlıklar', date: 'Bugün, 13:45', amount: books[1]?.price || 220, status: 'Kargoda' },
+    { id: 'ORD-9840', customer: 'Ramazan Çavuş', book: books[2]?.title || '1984', date: 'Bugün, 12:10', amount: books[2]?.price || 135, status: 'Tamamlandı' },
+    { id: 'ORD-9839', customer: 'Mustafa Demir', book: books[3]?.title || 'Şeker Portakalı', date: 'Dün, 18:30', amount: books[3]?.price || 110, status: 'Hazırlanıyor' },
+    { id: 'ORD-9838', customer: 'Ramazan Çavuş', book: books[4]?.title || 'Nutuk', date: 'Dün, 16:15', amount: books[4]?.price || 190, status: 'Tamamlandı' },
+  ];
+
+  return (
+    <div className="space-y-8 animate-fadeIn">
+      
+      {/* Başlık & Hızlı Aksiyon Barı */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-[#e8dfd1] shadow-sm">
+        <div>
+          <div className="flex items-center space-x-2">
+            <span className="p-2 bg-[#f4ebe1] text-[#6f4e37] rounded-xl font-bold">
+              <PieChartIcon className="h-5 w-5" />
+            </span>
+            <h2 className="text-xl font-bold text-[#3d2b1f]">Satış & Analiz Dashboard</h2>
+          </div>
+          <p className="text-xs text-[#785942] mt-1">Görsel grafikle satış hacmi, ciro, stok analizleri ve en çok satan kitaplar</p>
+        </div>
+
+        <div className="flex items-center space-x-3">
+          <Link
+            to="/books"
+            className="inline-flex items-center space-x-2 px-3.5 py-2 text-xs font-bold text-[#6f4e37] bg-[#f4ebe1] hover:bg-[#e8dfd1] rounded-xl border border-[#e5dac8] transition"
+          >
+            <BookOpen className="h-4 w-4" />
+            <span>Kataloğa Git</span>
+          </Link>
+          <button
+            onClick={() => setIsAddModalOpen(true)}
+            className="inline-flex items-center space-x-1.5 px-3.5 py-2 text-xs font-bold text-[#faf7f2] bg-gradient-to-r from-[#6f4e37] to-[#8b5e34] hover:from-[#5a3e2b] rounded-xl shadow-sm transition"
+          >
+            <Plus className="h-4 w-4" />
+            <span>Hızlı Kitap Ekle</span>
+          </button>
+        </div>
+      </div>
+
+      {/* 4 Ana Metrik Kartı */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        
+        {/* Aylık Ciro */}
+        <div className="bg-white p-5 rounded-2xl border border-[#e8dfd1] shadow-sm">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-xs font-semibold text-[#785942]">Aylık Toplam Ciro</span>
+            <span className="p-2 bg-[#f4ebe1] text-[#6f4e37] rounded-xl">
+              <DollarSign className="h-5 w-5" />
+            </span>
+          </div>
+          <h3 className="text-2xl font-bold text-[#3d2b1f]">{monthlyRevenue.toLocaleString('tr-TR')} ₺</h3>
+          <div className="flex items-center mt-2 text-xs font-semibold text-[#2e6f40]">
+            <ArrowUpRight className="h-4 w-4 mr-0.5" />
+            <span>+%18.4 geçen aya göre</span>
+          </div>
+        </div>
+
+        {/* Satılan Kitap Adedi */}
+        <div className="bg-white p-5 rounded-2xl border border-[#e8dfd1] shadow-sm">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-xs font-semibold text-[#785942]">Satılan Kitap Adedi</span>
+            <span className="p-2 bg-[#eaf3ed] text-[#2e6f40] rounded-xl">
+              <ShoppingBag className="h-5 w-5" />
+            </span>
+          </div>
+          <h3 className="text-2xl font-bold text-[#3d2b1f]">{monthlySoldUnits.toLocaleString('tr-TR')} Adet</h3>
+          <div className="flex items-center mt-2 text-xs font-semibold text-[#2e6f40]">
+            <ArrowUpRight className="h-4 w-4 mr-0.5" />
+            <span>+%12.5 geçen aya göre</span>
+          </div>
+        </div>
+
+        {/* Ortalama Sepet Tutarı */}
+        <div className="bg-white p-5 rounded-2xl border border-[#e8dfd1] shadow-sm">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-xs font-semibold text-[#785942]">Ortalama Sepet Tutarı</span>
+            <span className="p-2 bg-[#fdf3e7] text-[#9c5f25] rounded-xl">
+              <TrendingUp className="h-5 w-5" />
+            </span>
+          </div>
+          <h3 className="text-2xl font-bold text-[#3d2b1f]">{avgOrderValue} ₺</h3>
+          <div className="flex items-center mt-2 text-xs font-semibold text-[#2e6f40]">
+            <ArrowUpRight className="h-4 w-4 mr-0.5" />
+            <span>+%5.2 sepet artışı</span>
+          </div>
+        </div>
+
+        {/* Aktif Stok Değeri */}
+        <div className="bg-white p-5 rounded-2xl border border-[#e8dfd1] shadow-sm">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-xs font-semibold text-[#785942]">Aktif Stok Değeri</span>
+            <span className="p-2 bg-[#f4ebe1] text-[#6f4e37] rounded-xl">
+              <Package className="h-5 w-5" />
+            </span>
+          </div>
+          <h3 className="text-2xl font-bold text-[#3d2b1f]">{totalValuation.toLocaleString('tr-TR')} ₺</h3>
+          <div className="flex items-center mt-2 text-xs font-semibold text-[#785942]">
+            <span>{totalStock} Adet Ürün Depoda</span>
+          </div>
+        </div>
+
+      </div>
+
+      {/* Grafikler Alanı */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        {/* Aylık Satış Bar Grafiği */}
+        <div className="lg:col-span-2 bg-white p-6 rounded-2xl border border-[#e8dfd1] shadow-sm flex flex-col justify-between">
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h3 className="text-base font-bold text-[#3d2b1f]">Aylık Satış & Ciro Grafiği (2026)</h3>
+              <p className="text-xs text-[#785942]">Son 8 ayın toplam ciro gelişimi</p>
+            </div>
+            <div className="flex items-center space-x-2">
+              <span className="w-3 h-3 rounded-full bg-[#6f4e37]"></span>
+              <span className="text-xs text-[#785942] font-semibold">Ciro (₺)</span>
+            </div>
+          </div>
+
+          <div className="h-64 flex items-end justify-between gap-2 pt-8 pb-2 px-2 border-b border-[#f2ebdc]">
+            {monthlyData.map((item, index) => (
+              <div key={index} className="flex-1 flex flex-col items-center group relative h-full justify-end">
+                <div className="absolute -top-10 opacity-0 group-hover:opacity-100 transition bg-[#3d2b1f] text-[#faf7f2] text-[10px] font-bold py-1 px-2 rounded-lg pointer-events-none whitespace-nowrap shadow-md z-10">
+                  {item.revenue.toLocaleString('tr-TR')} ₺
+                </div>
+
+                <div 
+                  style={{ height: item.height }} 
+                  className="w-full max-w-[40px] bg-gradient-to-t from-[#6f4e37] to-[#8b5e34] hover:from-[#5a3e2b] hover:to-[#774f2a] rounded-t-lg transition-all duration-300 shadow-sm"
+                />
+
+                <span className="text-xs font-semibold text-[#785942] mt-3">{item.month}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className="flex justify-between items-center text-xs text-[#8c7462] pt-4">
+            <span>En Yüksek Ciro: <b>Ağustos (148,450 ₺)</b></span>
+            <span>Ortalama Aylık Ciro: <b>114,680 ₺</b></span>
+          </div>
+        </div>
+
+        {/* Kategori Bazlı Dağılım */}
+        <div className="bg-white p-6 rounded-2xl border border-[#e8dfd1] shadow-sm flex flex-col justify-between">
+          <div>
+            <h3 className="text-base font-bold text-[#3d2b1f] mb-1">Kategori Satış Payları</h3>
+            <p className="text-xs text-[#785942] mb-6">Kategorilerin toplam satış içindeki oranı</p>
+
+            <div className="space-y-4">
+              {categoryStats.map((cat, idx) => (
+                <div key={idx} className="space-y-1.5">
+                  <div className="flex justify-between text-xs font-semibold">
+                    <span className="text-[#3d2b1f]">{cat.name}</span>
+                    <span className="text-[#6f4e37]">%{cat.percent} ({cat.count} Adet)</span>
+                  </div>
+                  <div className="w-full h-2.5 bg-[#f4ebe1] rounded-full overflow-hidden">
+                    <div 
+                      style={{ width: `${cat.percent}%` }} 
+                      className={`h-full ${cat.color} rounded-full transition-all duration-500`}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-6 pt-4 border-t border-[#f2ebdc] text-center">
+            <p className="text-xs text-[#785942]">Lider Kategori: <b className="text-[#6f4e37]">Roman & Edebiyat (%35)</b></p>
+          </div>
+        </div>
+
+      </div>
+
+      {/* En Çok Satan Kitaplar Leaderboard */}
+      <div className="bg-white p-6 rounded-2xl border border-[#e8dfd1] shadow-sm">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center space-x-2">
+            <span className="p-2 bg-[#fdf3e7] text-[#9c5f25] rounded-xl font-bold">
+              <Trophy className="h-5 w-5" />
+            </span>
+            <div>
+              <h3 className="text-base font-bold text-[#3d2b1f]">En Çok Satan Kitaplar (Top 5)</h3>
+              <p className="text-xs text-[#785942]">En yüksek adet ve ciro getiren ürünler</p>
+            </div>
+          </div>
+          <Link to="/books" className="text-xs font-bold text-[#6f4e37] hover:underline">
+            Tüm Kataloğu Gör →
+          </Link>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs">
+            <thead>
+              <tr className="border-b border-[#e8dfd1] text-[#785942] uppercase font-bold text-[11px]">
+                <th className="pb-3 pl-2">Sıra</th>
+                <th className="pb-3">Kitap</th>
+                <th className="pb-3">Kategori</th>
+                <th className="pb-3">Birim Fiyat</th>
+                <th className="pb-3">Satılan Adet</th>
+                <th className="pb-3">Toplam Kazanç</th>
+                <th className="pb-3 pr-2 text-right">Detay Sayfası</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-[#f4ebe1]">
+              {topSellers.map((item) => (
+                <tr key={item.book.id} className="hover:bg-[#faf7f2] transition">
+                  <td className="py-3 pl-2">
+                    <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
+                      item.rank === 1 ? 'bg-amber-400 text-amber-950' :
+                      item.rank === 2 ? 'bg-slate-300 text-slate-900' :
+                      item.rank === 3 ? 'bg-amber-700 text-white' : 'bg-[#e9dfce] text-[#543d2b]'
+                    }`}>
+                      #{item.rank}
+                    </span>
+                  </td>
+
+                  <td className="py-3">
+                    <div className="flex items-center space-x-3">
+                      <img 
+                        src={item.book.coverImage} 
+                        alt={item.book.title} 
+                        className="w-9 h-12 object-cover rounded-md shadow-sm border border-[#e5dac8]" 
+                      />
+                      <div>
+                        <Link to={`/books/${item.book.id}`} className="font-bold text-[#3d2b1f] hover:text-[#8b5e34] block">
+                          {item.book.title}
+                        </Link>
+                        <span className="text-[#8c7462] text-[11px]">{item.book.author}</span>
+                      </div>
+                    </div>
+                  </td>
+
+                  <td className="py-3">
+                    <span className="px-2 py-0.5 bg-[#f4ebe1] text-[#6f4e37] rounded-md font-semibold text-[11px]">
+                      {item.book.category}
+                    </span>
+                  </td>
+
+                  <td className="py-3 font-semibold text-[#3d2b1f]">{item.book.price} ₺</td>
+                  <td className="py-3 font-bold text-[#6f4e37]">{item.soldCount} Adet</td>
+                  <td className="py-3 font-bold text-[#2e6f40]">{item.totalRevenue.toLocaleString('tr-TR')} ₺</td>
+
+                  <td className="py-3 pr-2 text-right">
+                    <Link
+                      to={`/books/${item.book.id}`}
+                      className="px-2.5 py-1 bg-[#f4ebe1] hover:bg-[#e8dfd1] text-[#6f4e37] rounded-lg text-[11px] font-bold transition"
+                    >
+                      İncele →
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Son Sipariş Hareketleri */}
+      <div className="bg-white p-6 rounded-2xl border border-[#e8dfd1] shadow-sm">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center space-x-2">
+            <span className="p-2 bg-[#eaf3ed] text-[#2e6f40] rounded-xl font-bold">
+              <Clock className="h-5 w-5" />
+            </span>
+            <div>
+              <h3 className="text-base font-bold text-[#3d2b1f]">Son Sipariş Hareketleri</h3>
+              <p className="text-xs text-[#785942]">Sistemde gerçekleşen canlı sipariş akışı</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs">
+            <thead>
+              <tr className="border-b border-[#e8dfd1] text-[#785942] uppercase font-bold text-[11px]">
+                <th className="pb-3">Sipariş Kodu</th>
+                <th className="pb-3">Müşteri</th>
+                <th className="pb-3">Satın Alınan Kitap</th>
+                <th className="pb-3">Tarih</th>
+                <th className="pb-3">Tutar</th>
+                <th className="pb-3 text-right">Durum</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-[#f4ebe1]">
+              {recentOrders.map((order) => (
+                <tr key={order.id} className="hover:bg-[#faf7f2] transition">
+                  <td className="py-3 font-bold text-[#6f4e37]">{order.id}</td>
+                  <td className="py-3 font-semibold text-[#3d2b1f]">{order.customer}</td>
+                  <td className="py-3 text-[#543d2b] font-medium">{order.book}</td>
+                  <td className="py-3 text-[#8c7462]">{order.date}</td>
+                  <td className="py-3 font-bold text-[#3d2b1f]">{order.amount} ₺</td>
+                  <td className="py-3 text-right">
+                    <span className={`px-2.5 py-1 rounded-lg text-[11px] font-bold ${
+                      order.status === 'Tamamlandı' ? 'bg-[#eaf3ed] text-[#2e6f40]' :
+                      order.status === 'Kargoda' ? 'bg-[#fdf3e7] text-[#9c5f25]' : 'bg-[#f4ebe1] text-[#6f4e37]'
+                    }`}>
+                      {order.status}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  );
+};

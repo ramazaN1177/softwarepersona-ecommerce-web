@@ -1,38 +1,48 @@
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { BookProvider } from './context/BookContext';
 import { Navbar } from './components/Navbar';
-import { StatsCards } from './components/StatsCards';
-import { FilterBar } from './components/FilterBar';
-import { BookList } from './components/BookList';
+import { DashboardPage } from './pages/DashboardPage';
+import { BooksPage } from './pages/BooksPage';
+import { BookDetailPage } from './pages/BookDetailPage';
 import { BookFormModal } from './components/BookFormModal';
 import { BookDetailModal } from './components/BookDetailModal';
 import { ConfirmModal } from './components/ConfirmModal';
+import { CartDrawer } from './components/CartDrawer';
 
 function AppContent() {
   return (
-    <div className="min-h-screen bg-[#faf7f2] text-[#3d2b1f] font-sans antialiased selection:bg-[#8b5e34] selection:text-white">
-      {/* Üst Navbar */}
-      <Navbar />
+    <div className="min-h-screen bg-[#faf7f2] text-[#3d2b1f] font-sans antialiased selection:bg-[#8b5e34] selection:text-white flex flex-col justify-between">
+      <div>
+        {/* Üst Navigasyon Çubuğu */}
+        <Navbar />
 
-      {/* Ana İçerik Konteyneri */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* İstatistikler */}
-        <StatsCards />
+        {/* Sayfa Yönlendirmeleri (React Router) */}
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <Routes>
+            {/* İlk Açılan Sayfa: Satış & Analiz Dashboard */}
+            <Route path="/" element={<DashboardPage />} />
 
-        {/* Arama ve Filtre Çubuğu */}
-        <FilterBar />
+            {/* Kitap Kataloğu Sayfası */}
+            <Route path="/books" element={<BooksPage />} />
 
-        {/* Kitap Listesi Grid */}
-        <BookList />
-      </main>
+            {/* Özel Kitap Detay Sayfası */}
+            <Route path="/books/:id" element={<BookDetailPage />} />
 
-      {/* Modallar */}
+            {/* Bilinmeyen adresleri Dashboard'a yönlendir */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </main>
+      </div>
+
+      {/* Global Modallar & Sepet Çekmecesi */}
       <BookFormModal />
       <BookDetailModal />
       <ConfirmModal />
+      <CartDrawer />
 
       {/* Footer */}
-      <footer className="border-t border-[#e6dbc9] bg-[#f2ebdc] py-6 text-center text-xs text-[#785942]">
-        <p>© 2026 KitapDünyası E-Ticaret Admin Paneli — Sıcak Bej & Kahve Teması</p>
+      <footer className="border-t border-[#e6dbc9] bg-[#f2ebdc] py-6 text-center text-xs text-[#785942] mt-12">
+        <p>© 2026 Ramazan Çavuş KitapDünyası E-Ticaret Admin Paneli — React Router v6 & LocalStorage</p>
       </footer>
     </div>
   );
@@ -40,8 +50,10 @@ function AppContent() {
 
 export default function App() {
   return (
-    <BookProvider>
-      <AppContent />
-    </BookProvider>
+    <BrowserRouter>
+      <BookProvider>
+        <AppContent />
+      </BookProvider>
+    </BrowserRouter>
   );
 }
