@@ -15,37 +15,33 @@ export const StatsCards: React.FC = () => {
       title: 'Toplam Kitap Çeşidi',
       value: totalBooksCount,
       icon: Book,
-      color: 'from-blue-500 to-indigo-600',
-      bgColor: 'bg-blue-500/10',
-      textColor: 'text-blue-400',
-      borderColor: 'border-blue-500/20'
+      bgColor: 'bg-[#f4ebe1]',
+      textColor: 'text-[#6f4e37]',
+      borderColor: 'border-[#e5d8c8]'
     },
     {
       title: 'Toplam Stok Adedi',
       value: totalStock.toLocaleString('tr-TR'),
       icon: PackageCheck,
-      color: 'from-emerald-500 to-teal-600',
-      bgColor: 'bg-emerald-500/10',
-      textColor: 'text-emerald-400',
-      borderColor: 'border-emerald-500/20'
+      bgColor: 'bg-[#eaf3ed]',
+      textColor: 'text-[#2e6f40]',
+      borderColor: 'border-[#cce3d3]'
     },
     {
       title: 'Stok Değeri',
       value: `${totalValue.toLocaleString('tr-TR')} ₺`,
       icon: Coins,
-      color: 'from-violet-500 to-purple-600',
-      bgColor: 'bg-violet-500/10',
-      textColor: 'text-violet-400',
-      borderColor: 'border-violet-500/20'
+      bgColor: 'bg-[#fdf3e7]',
+      textColor: 'text-[#9c5f25]',
+      borderColor: 'border-[#f5dfc6]'
     },
     {
       title: 'Kritik Stok (<10)',
       value: lowStockCount,
       icon: AlertTriangle,
-      color: 'from-amber-500 to-rose-600',
-      bgColor: lowStockCount > 0 ? 'bg-rose-500/10' : 'bg-slate-800',
-      textColor: lowStockCount > 0 ? 'text-rose-400' : 'text-slate-400',
-      borderColor: lowStockCount > 0 ? 'border-rose-500/30' : 'border-slate-700'
+      bgColor: lowStockCount > 0 ? 'bg-[#fdf2f2]' : 'bg-[#f2ebdc]',
+      textColor: lowStockCount > 0 ? 'text-[#c0392b]' : 'text-[#785942]',
+      borderColor: lowStockCount > 0 ? 'border-[#f8d7da]' : 'border-[#e5dac8]'
     }
   ];
 
@@ -56,11 +52,11 @@ export const StatsCards: React.FC = () => {
         return (
           <div
             key={index}
-            className={`p-5 rounded-2xl bg-slate-900 border ${stat.borderColor} shadow-lg transition duration-200 hover:scale-[1.02] flex items-center justify-between`}
+            className={`p-5 rounded-2xl bg-white border ${stat.borderColor} shadow-sm transition duration-200 hover:shadow-md hover:scale-[1.01] flex items-center justify-between`}
           >
             <div>
-              <p className="text-xs font-medium text-slate-400">{stat.title}</p>
-              <h3 className="text-2xl font-bold text-white mt-1">{stat.value}</h3>
+              <p className="text-xs font-semibold text-[#785942]">{stat.title}</p>
+              <h3 className="text-2xl font-bold text-[#3d2b1f] mt-1">{stat.value}</h3>
             </div>
             <div className={`p-3 rounded-xl ${stat.bgColor} ${stat.textColor}`}>
               <Icon className="h-6 w-6" />

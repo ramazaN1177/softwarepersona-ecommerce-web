@@ -9,7 +9,7 @@ import { ConfirmModal } from './components/ConfirmModal';
 
 function AppContent() {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans antialiased selection:bg-indigo-500 selection:text-white">
+    <div className="min-h-screen bg-[#faf7f2] text-[#3d2b1f] font-sans antialiased selection:bg-[#8b5e34] selection:text-white">
       {/* Üst Navbar */}
       <Navbar />
 
@@ -31,8 +31,8 @@ function AppContent() {
       <ConfirmModal />
 
       {/* Footer */}
-      <footer className="border-t border-slate-900 bg-slate-950 py-6 text-center text-xs text-slate-500">
-        <p>© 2026 KitapDünyası E-Ticaret Admin Paneli — LocalStorage & React TS</p>
+      <footer className="border-t border-[#e6dbc9] bg-[#f2ebdc] py-6 text-center text-xs text-[#785942]">
+        <p>© 2026 KitapDünyası E-Ticaret Admin Paneli — Sıcak Bej & Kahve Teması</p>
       </footer>
     </div>
   );
