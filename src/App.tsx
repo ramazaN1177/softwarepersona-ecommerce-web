@@ -8,6 +8,8 @@ import { BookDetailModal } from './components/BookDetailModal';
 import { ConfirmModal } from './components/ConfirmModal';
 import { CartDrawer } from './components/CartDrawer';
 import { RefreshCw } from 'lucide-react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // PERFORMANS OPTİMİZASYONU: Code-splitting & Lazy Loading
 const DashboardPage = lazy(() => import('./pages/DashboardPage').then(m => ({ default: m.DashboardPage })));
@@ -54,6 +56,20 @@ function AppContent() {
       <BookDetailModal />
       <ConfirmModal />
       <CartDrawer />
+
+      {/* Toast Bildirim Kutuları (React Toastify) */}
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
 
       {/* Footer */}
       <footer className="border-t border-[#e6dbc9] bg-[#f2ebdc] py-6 text-center text-xs text-[#785942] mt-12">
