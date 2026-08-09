@@ -91,7 +91,7 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       return [...prev, { book, quantity: Math.min(quantity, book.stock) }];
     });
-    toast.success(`🛒 "${book.title}" (${quantity} adet) sepetinize eklendi!`, {
+    toast.success(`"${book.title}" (${quantity} adet) sepetinize eklendi!`, {
       icon: false
     });
   }, []);
@@ -116,7 +116,7 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Sepetten Çıkar
   const handleRemoveFromCart = useCallback((bookId: string) => {
     setCart(prev => prev.filter(item => item.book.id !== bookId));
-    toast.info('Ürün sepetten çıkarıldı.');
+    toast.success('Ürün sepetten çıkarıldı.');
   }, []);
 
   // Sepeti Temizle
@@ -124,38 +124,38 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setCart([]);
   }, []);
 
-  // Yeni Kitap Ekle (Toast Bildirimli)
+  // Yeni Kitap Ekle (Toast Bildirimli - Yeşil)
   const handleAddBook = useCallback((bookData: Omit<Book, 'id' | 'createdAt'>) => {
     const newBook = storageService.addBook(bookData);
     setBooks(prev => [newBook, ...prev]);
     setIsAddModalOpen(false);
-    toast.success(`" ${newBook.title} " kitabı başarıyla eklendi!`);
+    toast.success(`"${newBook.title}" kitabı başarıyla eklendi!`);
   }, []);
 
-  // Kitap Güncelle (Toast Bildirimli)
+  // Kitap Güncelle (Toast Bildirimli - Yeşil)
   const handleUpdateBook = useCallback((id: string, updatedFields: Partial<Book>) => {
     const updated = storageService.updateBook(id, updatedFields);
     if (updated) {
       setBooks(prev => prev.map(b => (b.id === id ? updated : b)));
-      toast.success(`" ${updated.title} " kitap bilgileri güncellendi!`);
+      toast.success(`"${updated.title}" kitap bilgileri güncellendi!`);
     }
     setEditingBook(null);
   }, []);
 
-  // Kitap Sil (Toast Bildirimli)
+  // Kitap Sil (Toast Bildirimli - Yeşil)
   const handleDeleteBook = useCallback((id: string) => {
     const bookToDelete = books.find(b => b.id === id);
     storageService.deleteBook(id);
     setBooks(prev => prev.filter(b => b.id !== id));
     setDeletingBook(null);
-    toast.warn(`" ${bookToDelete?.title || 'Kitap'} " silindi.`);
+    toast.success(`"${bookToDelete?.title || 'Kitap'}" başarıyla silindi!`);
   }, [books]);
 
-  // Varsayılan Verilere Sıfırla
+  // Varsayılan Verilere Sıfırla (Yeşil)
   const handleResetToDefault = useCallback(() => {
     const defaultBooks = storageService.resetToDefault();
     setBooks(defaultBooks);
-    toast.info('Tüm kitaplar varsayılan örnek verilere sıfırlandı.');
+    toast.success('Tüm kitaplar varsayılan verilere sıfırlandı.');
   }, []);
 
   // Filtreleri Temizle
@@ -165,7 +165,7 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setSortOption('newest');
     setMinPrice('');
     setMaxPrice('');
-    toast.info('Tüm filtreler temizlendi.');
+    toast.success('Tüm filtreler temizlendi.');
   }, []);
 
   // PERFORMANS OPTİMİZASYONU: useMemo ile Caching

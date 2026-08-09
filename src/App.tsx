@@ -57,18 +57,19 @@ function AppContent() {
       <ConfirmModal />
       <CartDrawer />
 
-      {/* Toast Bildirim Kutuları (React Toastify) */}
+      {/* Toast Bildirim Kutuları (Mobilde Üstten Açılır) */}
       <ToastContainer
-        position="bottom-right"
-        autoClose={3000}
+        position="top-right"
+        autoClose={2500}
         hideProgressBar={false}
-        newestOnTop={false}
+        newestOnTop={true}
         closeOnClick
         rtl={false}
         pauseOnFocusLoss
         draggable
         pauseOnHover
         theme="colored"
+        className="text-xs font-bold font-sans"
       />
 
       {/* Footer */}
