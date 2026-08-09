@@ -22,11 +22,11 @@ export const BookFormModal: React.FC = () => {
   const [formData, setFormData] = useState({
     title: '',
     author: '',
-    price: 100,
+    price: '' as string | number,
     category: 'Roman & Edebiyat' as Category,
     description: '',
     coverImage: '',
-    stock: 10,
+    stock: '' as string | number,
     pages: 250,
     rating: 4.5
   });
@@ -48,11 +48,11 @@ export const BookFormModal: React.FC = () => {
       setFormData({
         title: '',
         author: '',
-        price: 100,
+        price: 150,
         category: 'Roman & Edebiyat',
         description: '',
         coverImage: '',
-        stock: 10,
+        stock: 15,
         pages: 250,
         rating: 4.5
       });
@@ -84,14 +84,19 @@ export const BookFormModal: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.title || !formData.author || !formData.price) {
-      alert('Lütfen gerekli tüm alanları doldurun!');
+    const parsedPrice = Number(formData.price);
+    const parsedStock = Number(formData.stock);
+
+    if (!formData.title || !formData.author || isNaN(parsedPrice) || parsedPrice <= 0) {
+      alert('Lütfen geçerli bir kitap adı, yazar ve fiyat giriniz!');
       return;
     }
 
     const defaultImage = 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=600&q=80';
     const finalData = {
       ...formData,
+      price: parsedPrice,
+      stock: isNaN(parsedStock) ? 10 : parsedStock,
       coverImage: formData.coverImage.trim() || defaultImage
     };
 
@@ -164,9 +169,14 @@ export const BookFormModal: React.FC = () => {
                 type="number"
                 required
                 min="1"
+                placeholder="Örn: 370"
                 value={formData.price}
-                onChange={e => setFormData({ ...formData, price: Number(e.target.value) })}
-                className="w-full px-3.5 py-2.5 bg-white border border-[#e2d5c3] rounded-xl text-[#3d2b1f] focus:outline-none focus:ring-2 focus:ring-[#8b5e34] text-sm"
+                onFocus={e => e.target.select()}
+                onChange={e => {
+                  const val = e.target.value;
+                  setFormData({ ...formData, price: val === '' ? '' : Number(val) });
+                }}
+                className="w-full px-3.5 py-2.5 bg-white border border-[#e2d5c3] rounded-xl text-[#3d2b1f] focus:outline-none focus:ring-2 focus:ring-[#8b5e34] text-sm font-semibold"
               />
             </div>
 
@@ -177,9 +187,14 @@ export const BookFormModal: React.FC = () => {
                 type="number"
                 required
                 min="0"
+                placeholder="Örn: 20"
                 value={formData.stock}
-                onChange={e => setFormData({ ...formData, stock: Number(e.target.value) })}
-                className="w-full px-3.5 py-2.5 bg-white border border-[#e2d5c3] rounded-xl text-[#3d2b1f] focus:outline-none focus:ring-2 focus:ring-[#8b5e34] text-sm"
+                onFocus={e => e.target.select()}
+                onChange={e => {
+                  const val = e.target.value;
+                  setFormData({ ...formData, stock: val === '' ? '' : Number(val) });
+                }}
+                className="w-full px-3.5 py-2.5 bg-white border border-[#e2d5c3] rounded-xl text-[#3d2b1f] focus:outline-none focus:ring-2 focus:ring-[#8b5e34] text-sm font-semibold"
               />
             </div>
 
@@ -189,7 +204,7 @@ export const BookFormModal: React.FC = () => {
               <select
                 value={formData.category}
                 onChange={e => setFormData({ ...formData, category: e.target.value as Category })}
-                className="w-full px-3.5 py-2.5 bg-white border border-[#e2d5c3] rounded-xl text-[#3d2b1f] focus:outline-none focus:ring-2 focus:ring-[#8b5e34] text-sm"
+                className="w-full px-3.5 py-2.5 bg-white border border-[#e2d5c3] rounded-xl text-[#3d2b1f] focus:outline-none focus:ring-2 focus:ring-[#8b5e34] text-sm font-semibold"
               >
                 {categories.map(c => (
                   <option key={c} value={c}>{c}</option>
