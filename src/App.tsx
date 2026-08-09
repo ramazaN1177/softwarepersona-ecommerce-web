@@ -57,7 +57,7 @@ function AppContent() {
       <ConfirmModal />
       <CartDrawer />
 
-      {/* Toast Bildirim Kutuları (Mobilde Üstten Açılır) */}
+      {/* Toast Bildirim Kutuları */}
       <ToastContainer
         position="top-right"
         autoClose={2500}
@@ -74,7 +74,7 @@ function AppContent() {
 
       {/* Footer */}
       <footer className="border-t border-[#e6dbc9] bg-[#f2ebdc] py-6 text-center text-xs text-[#785942] mt-12">
-        <p>© 2026 Ramazan Çavuş KitapDünyası E-Ticaret Admin Paneli — React Router v6 & LocalStorage</p>
+        <p>© 2026 Ramazan Çavuş Kitaplık E-Ticaret Admin Paneli — React Router v6 & LocalStorage</p>
       </footer>
     </div>
   );

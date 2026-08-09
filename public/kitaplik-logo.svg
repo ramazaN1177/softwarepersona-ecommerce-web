@@ -1,5 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <defs>
+    <!-- Zengin Kahve Espresso & Altın Gradyanlar -->
     <linearGradient id="leftWingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#6f4e37" />
       <stop offset="100%" stop-color="#3d2b1f" />
@@ -15,18 +16,28 @@
       <stop offset="50%" stop-color="#f59e0b" />
       <stop offset="100%" stop-color="#d97706" />
     </linearGradient>
+
+    <filter id="cleanDropShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#2a1b12" flood-opacity="0.35" />
+    </filter>
   </defs>
 
-  <!-- FAVICON SAF VE KESKİN ŞEFFAF AMBLEM (PURE TRANSPARENT FAVICON) -->
-  <g transform="translate(0, 8)">
+  <!-- YAZISIZ VE ARKA PLANSIZ SAF KESKİN KİTAPLIK AMBLEMİ (PURE TRANSPARENT) -->
+  <g filter="url(#cleanDropShadow)" transform="translate(0, 8)">
+    
+    <!-- Sol Kitap Kapağı & Sayfaları -->
     <path d="M 64 140 C 64 116, 140 100, 240 124 L 240 404 C 140 380, 64 396, 64 420 Z" fill="url(#leftWingGrad)" />
     <path d="M 84 132 C 84 118, 148 108, 232 126 L 232 392 C 148 376, 84 386, 84 402 Z" fill="#faf7f2" />
 
+    <!-- Sağ Kitap Kapağı & Sayfaları -->
     <path d="M 448 140 C 448 116, 372 100, 272 124 L 272 404 C 372 380, 448 396, 448 420 Z" fill="url(#rightWingGrad)" />
     <path d="M 428 132 C 428 118, 364 108, 280 126 L 280 392 C 364 376, 428 386, 428 402 Z" fill="#ffffff" />
 
+    <!-- Orta Kitap Sırtı Çizgisi -->
     <path d="M 248 116 L 264 116 L 264 412 L 248 412 Z" fill="#2d1e15" opacity="0.8" />
 
+    <!-- Ortada Net Parlayan Altın Kitap Ayracı (Vivid Gold Ribbon Bookmark) -->
     <path d="M 288 110 L 288 280 L 320 248 L 352 280 L 352 110 Z" fill="url(#vividGold)" stroke="#b45309" stroke-width="4" />
+
   </g>
 </svg>

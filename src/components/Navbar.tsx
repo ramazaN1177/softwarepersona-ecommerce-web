@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BookOpen, Plus, RefreshCw, BarChart3, LayoutGrid, ShieldCheck, ShoppingCart, Store, Menu, X, Globe } from 'lucide-react';
+import { Plus, RefreshCw, BarChart3, LayoutGrid, ShieldCheck, ShoppingCart, Store, Menu, X, Globe } from 'lucide-react';
 import { useBookContext } from '../context/BookContext';
 import { useLanguage } from '../context/LanguageContext';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
@@ -31,12 +31,14 @@ export const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           
-          {/* Logo */}
+          {/* Kitaplık AI Üretimi Logosu (kitaplik-logo.png) */}
           <div className="flex items-center space-x-3 sm:space-x-6">
             <Link to={viewMode === 'admin' ? '/' : '/books'} className="flex items-center space-x-2.5 sm:space-x-3 group">
-              <div className="p-2 sm:p-2.5 bg-gradient-to-tr from-[#6f4e37] to-[#8b5e34] rounded-xl shadow-md text-[#faf7f2] group-hover:scale-105 transition duration-200">
-                <BookOpen className="h-5 w-5 sm:h-7 sm:w-7" />
-              </div>
+              <img 
+                src="/kitaplik-logo.png" 
+                alt="Kitaplık Logo" 
+                className="h-9 w-9 sm:h-11 sm:w-11 object-contain rounded-xl drop-shadow-md group-hover:scale-105 transition duration-200"
+              />
               <div>
                 <h1 className="text-base sm:text-xl font-extrabold text-[#3d2b1f] tracking-tight leading-none">
                   {t('app_title')}
@@ -135,7 +137,7 @@ export const Navbar: React.FC = () => {
               >
                 <ShoppingCart className="h-4 w-4 sm:h-5 sm:w-5" />
                 {totalCartCount > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 bg-[#2e6f40] text-white font-extrabold text-[10px] w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center border-2 border-[#f2ebdc] shadow-sm">
+                  <span className="absolute -top-1.5 -right-1.5 bg-[#2e6f40] text-[#faf7f2] font-extrabold text-[10px] w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center border-2 border-[#f2ebdc] shadow-sm">
                     {totalCartCount}
                   </span>
                 )}
@@ -176,7 +178,7 @@ export const Navbar: React.FC = () => {
 
         </div>
 
-        {/* Mobil Dropdown Menü (Admin Sekmeleri & Sıfırla) */}
+        {/* Mobil Dropdown Menü */}
         {mobileMenuOpen && viewMode === 'admin' && (
           <div className="md:hidden py-3 border-t border-[#e5dac8] space-y-2 animate-fadeIn">
             <NavLink
