@@ -36,14 +36,14 @@ export const DashboardPage: React.FC = () => {
 
   // Monthly Sales Bar Data
   const monthlyData = [
-    { month: 'Ocak', revenue: 84000, height: '45%' },
-    { month: 'Şubat', revenue: 92000, height: '52%' },
-    { month: 'Mart', revenue: 105000, height: '60%' },
-    { month: 'Nisan', revenue: 118000, height: '70%' },
-    { month: 'Mayıs', revenue: 110000, height: '65%' },
-    { month: 'Haziran', revenue: 132000, height: '82%' },
-    { month: 'Temmuz', revenue: 128000, height: '78%' },
-    { month: 'Ağustos', revenue: 148450, height: '95%' },
+    { month: 'Oca', revenue: 84000, height: '45%' },
+    { month: 'Şub', revenue: 92000, height: '52%' },
+    { month: 'Mar', revenue: 105000, height: '60%' },
+    { month: 'Nis', revenue: 118000, height: '70%' },
+    { month: 'May', revenue: 110000, height: '65%' },
+    { month: 'Haz', revenue: 132000, height: '82%' },
+    { month: 'Tem', revenue: 128000, height: '78%' },
+    { month: 'Ağu', revenue: 148450, height: '95%' },
   ];
 
   // Category Share Breakdown
@@ -73,24 +73,24 @@ export const DashboardPage: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-8 animate-fadeIn">
+    <div className="space-y-6 sm:space-y-8 animate-fadeIn">
       
       {/* Başlık & Hızlı Aksiyon Barı */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-2xl border border-[#e8dfd1] shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 sm:p-6 rounded-2xl border border-[#e8dfd1] shadow-sm">
         <div>
           <div className="flex items-center space-x-2">
             <span className="p-2 bg-[#f4ebe1] text-[#6f4e37] rounded-xl font-bold">
               <PieChartIcon className="h-5 w-5" />
             </span>
-            <h2 className="text-xl font-bold text-[#3d2b1f]">Satış & Analiz Dashboard</h2>
+            <h2 className="text-lg sm:text-xl font-bold text-[#3d2b1f]">Satış & Analiz Dashboard</h2>
           </div>
           <p className="text-xs text-[#785942] mt-1">Görsel grafikle satış hacmi, ciro, stok analizleri ve en çok satan kitaplar</p>
         </div>
 
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-2 sm:space-x-3">
           <Link
             to="/books"
-            className="inline-flex items-center space-x-2 px-3.5 py-2 text-xs font-bold text-[#6f4e37] bg-[#f4ebe1] hover:bg-[#e8dfd1] rounded-xl border border-[#e5dac8] transition"
+            className="inline-flex items-center space-x-1.5 px-3 py-2 text-xs font-bold text-[#6f4e37] bg-[#f4ebe1] hover:bg-[#e8dfd1] rounded-xl border border-[#e5dac8] transition"
           >
             <BookOpen className="h-4 w-4" />
             <span>Kataloğa Git</span>
@@ -100,69 +100,69 @@ export const DashboardPage: React.FC = () => {
             className="inline-flex items-center space-x-1.5 px-3.5 py-2 text-xs font-bold text-[#faf7f2] bg-gradient-to-r from-[#6f4e37] to-[#8b5e34] hover:from-[#5a3e2b] rounded-xl shadow-sm transition"
           >
             <Plus className="h-4 w-4" />
-            <span>Hızlı Kitap Ekle</span>
+            <span>Kitap Ekle</span>
           </button>
         </div>
       </div>
 
       {/* 4 Ana Metrik Kartı */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-4">
         
         {/* Aylık Ciro */}
-        <div className="bg-white p-5 rounded-2xl border border-[#e8dfd1] shadow-sm">
+        <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#e8dfd1] shadow-sm">
           <div className="flex items-center justify-between mb-3">
             <span className="text-xs font-semibold text-[#785942]">Aylık Toplam Ciro</span>
             <span className="p-2 bg-[#f4ebe1] text-[#6f4e37] rounded-xl">
-              <DollarSign className="h-5 w-5" />
+              <DollarSign className="h-4 w-4 sm:h-5 sm:w-5" />
             </span>
           </div>
-          <h3 className="text-2xl font-bold text-[#3d2b1f]">{monthlyRevenue.toLocaleString('tr-TR')} ₺</h3>
-          <div className="flex items-center mt-2 text-xs font-semibold text-[#2e6f40]">
-            <ArrowUpRight className="h-4 w-4 mr-0.5" />
+          <h3 className="text-xl sm:text-2xl font-bold text-[#3d2b1f]">{monthlyRevenue.toLocaleString('tr-TR')} ₺</h3>
+          <div className="flex items-center mt-2 text-[11px] sm:text-xs font-semibold text-[#2e6f40]">
+            <ArrowUpRight className="h-3.5 w-3.5 mr-0.5" />
             <span>+%18.4 geçen aya göre</span>
           </div>
         </div>
 
         {/* Satılan Kitap Adedi */}
-        <div className="bg-white p-5 rounded-2xl border border-[#e8dfd1] shadow-sm">
+        <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#e8dfd1] shadow-sm">
           <div className="flex items-center justify-between mb-3">
             <span className="text-xs font-semibold text-[#785942]">Satılan Kitap Adedi</span>
             <span className="p-2 bg-[#eaf3ed] text-[#2e6f40] rounded-xl">
-              <ShoppingBag className="h-5 w-5" />
+              <ShoppingBag className="h-4 w-4 sm:h-5 sm:w-5" />
             </span>
           </div>
-          <h3 className="text-2xl font-bold text-[#3d2b1f]">{monthlySoldUnits.toLocaleString('tr-TR')} Adet</h3>
-          <div className="flex items-center mt-2 text-xs font-semibold text-[#2e6f40]">
-            <ArrowUpRight className="h-4 w-4 mr-0.5" />
+          <h3 className="text-xl sm:text-2xl font-bold text-[#3d2b1f]">{monthlySoldUnits.toLocaleString('tr-TR')} Adet</h3>
+          <div className="flex items-center mt-2 text-[11px] sm:text-xs font-semibold text-[#2e6f40]">
+            <ArrowUpRight className="h-3.5 w-3.5 mr-0.5" />
             <span>+%12.5 geçen aya göre</span>
           </div>
         </div>
 
         {/* Ortalama Sepet Tutarı */}
-        <div className="bg-white p-5 rounded-2xl border border-[#e8dfd1] shadow-sm">
+        <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#e8dfd1] shadow-sm">
           <div className="flex items-center justify-between mb-3">
             <span className="text-xs font-semibold text-[#785942]">Ortalama Sepet Tutarı</span>
             <span className="p-2 bg-[#fdf3e7] text-[#9c5f25] rounded-xl">
-              <TrendingUp className="h-5 w-5" />
+              <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5" />
             </span>
           </div>
-          <h3 className="text-2xl font-bold text-[#3d2b1f]">{avgOrderValue} ₺</h3>
-          <div className="flex items-center mt-2 text-xs font-semibold text-[#2e6f40]">
-            <ArrowUpRight className="h-4 w-4 mr-0.5" />
+          <h3 className="text-xl sm:text-2xl font-bold text-[#3d2b1f]">{avgOrderValue} ₺</h3>
+          <div className="flex items-center mt-2 text-[11px] sm:text-xs font-semibold text-[#2e6f40]">
+            <ArrowUpRight className="h-3.5 w-3.5 mr-0.5" />
             <span>+%5.2 sepet artışı</span>
           </div>
         </div>
 
         {/* Aktif Stok Değeri */}
-        <div className="bg-white p-5 rounded-2xl border border-[#e8dfd1] shadow-sm">
+        <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#e8dfd1] shadow-sm">
           <div className="flex items-center justify-between mb-3">
             <span className="text-xs font-semibold text-[#785942]">Aktif Stok Değeri</span>
             <span className="p-2 bg-[#f4ebe1] text-[#6f4e37] rounded-xl">
-              <Package className="h-5 w-5" />
+              <Package className="h-4 w-4 sm:h-5 sm:w-5" />
             </span>
           </div>
-          <h3 className="text-2xl font-bold text-[#3d2b1f]">{totalValuation.toLocaleString('tr-TR')} ₺</h3>
-          <div className="flex items-center mt-2 text-xs font-semibold text-[#785942]">
+          <h3 className="text-xl sm:text-2xl font-bold text-[#3d2b1f]">{totalValuation.toLocaleString('tr-TR')} ₺</h3>
+          <div className="flex items-center mt-2 text-[11px] sm:text-xs font-semibold text-[#785942]">
             <span>{totalStock} Adet Ürün Depoda</span>
           </div>
         </div>
@@ -173,43 +173,43 @@ export const DashboardPage: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
         {/* Aylık Satış Bar Grafiği */}
-        <div className="lg:col-span-2 bg-white p-6 rounded-2xl border border-[#e8dfd1] shadow-sm flex flex-col justify-between">
+        <div className="lg:col-span-2 bg-white p-5 sm:p-6 rounded-2xl border border-[#e8dfd1] shadow-sm flex flex-col justify-between">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h3 className="text-base font-bold text-[#3d2b1f]">Aylık Satış & Ciro Grafiği (2026)</h3>
+              <h3 className="text-base font-bold text-[#3d2b1f]">Aylık Satış & Ciro Grafiği</h3>
               <p className="text-xs text-[#785942]">Son 8 ayın toplam ciro gelişimi</p>
             </div>
             <div className="flex items-center space-x-2">
-              <span className="w-3 h-3 rounded-full bg-[#6f4e37]"></span>
-              <span className="text-xs text-[#785942] font-semibold">Ciro (₺)</span>
+              <span className="w-2.5 h-2.5 rounded-full bg-[#6f4e37]"></span>
+              <span className="text-[11px] text-[#785942] font-semibold">Ciro (₺)</span>
             </div>
           </div>
 
-          <div className="h-64 flex items-end justify-between gap-2 pt-8 pb-2 px-2 border-b border-[#f2ebdc]">
+          <div className="h-56 sm:h-64 flex items-end justify-between gap-1.5 sm:gap-2 pt-8 pb-2 px-1 border-b border-[#f2ebdc]">
             {monthlyData.map((item, index) => (
               <div key={index} className="flex-1 flex flex-col items-center group relative h-full justify-end">
-                <div className="absolute -top-10 opacity-0 group-hover:opacity-100 transition bg-[#3d2b1f] text-[#faf7f2] text-[10px] font-bold py-1 px-2 rounded-lg pointer-events-none whitespace-nowrap shadow-md z-10">
+                <div className="absolute -top-10 opacity-0 group-hover:opacity-100 transition bg-[#3d2b1f] text-[#faf7f2] text-[10px] font-bold py-1 px-1.5 rounded-lg pointer-events-none whitespace-nowrap shadow-md z-10">
                   {item.revenue.toLocaleString('tr-TR')} ₺
                 </div>
 
                 <div 
                   style={{ height: item.height }} 
-                  className="w-full max-w-[40px] bg-gradient-to-t from-[#6f4e37] to-[#8b5e34] hover:from-[#5a3e2b] hover:to-[#774f2a] rounded-t-lg transition-all duration-300 shadow-sm"
+                  className="w-full max-w-[36px] bg-gradient-to-t from-[#6f4e37] to-[#8b5e34] hover:from-[#5a3e2b] hover:to-[#774f2a] rounded-t-lg transition-all duration-300 shadow-sm"
                 />
 
-                <span className="text-xs font-semibold text-[#785942] mt-3">{item.month}</span>
+                <span className="text-[11px] font-semibold text-[#785942] mt-3">{item.month}</span>
               </div>
             ))}
           </div>
 
-          <div className="flex justify-between items-center text-xs text-[#8c7462] pt-4">
+          <div className="flex flex-col sm:flex-row justify-between sm:items-center text-xs text-[#8c7462] pt-4 gap-1">
             <span>En Yüksek Ciro: <b>Ağustos (148,450 ₺)</b></span>
             <span>Ortalama Aylık Ciro: <b>114,680 ₺</b></span>
           </div>
         </div>
 
         {/* Kategori Bazlı Dağılım */}
-        <div className="bg-white p-6 rounded-2xl border border-[#e8dfd1] shadow-sm flex flex-col justify-between">
+        <div className="bg-white p-5 sm:p-6 rounded-2xl border border-[#e8dfd1] shadow-sm flex flex-col justify-between">
           <div>
             <h3 className="text-base font-bold text-[#3d2b1f] mb-1">Kategori Satış Payları</h3>
             <p className="text-xs text-[#785942] mb-6">Kategorilerin toplam satış içindeki oranı</p>
@@ -218,8 +218,8 @@ export const DashboardPage: React.FC = () => {
               {categoryStats.map((cat, idx) => (
                 <div key={idx} className="space-y-1.5">
                   <div className="flex justify-between text-xs font-semibold">
-                    <span className="text-[#3d2b1f]">{cat.name}</span>
-                    <span className="text-[#6f4e37]">%{cat.percent} ({cat.count} Adet)</span>
+                    <span className="text-[#3d2b1f] truncate pr-2">{cat.name}</span>
+                    <span className="text-[#6f4e37] shrink-0">%{cat.percent} ({cat.count} Adet)</span>
                   </div>
                   <div className="w-full h-2.5 bg-[#f4ebe1] rounded-full overflow-hidden">
                     <div 
@@ -239,8 +239,8 @@ export const DashboardPage: React.FC = () => {
 
       </div>
 
-      {/* En Çok Satan Kitaplar Leaderboard */}
-      <div className="bg-white p-6 rounded-2xl border border-[#e8dfd1] shadow-sm">
+      {/* En Çok Satan Kitaplar Leaderboard (MOBİL UYUMLU KAYDIRMA TABLOSU) */}
+      <div className="bg-white p-4 sm:p-6 rounded-2xl border border-[#e8dfd1] shadow-sm">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center space-x-2">
             <span className="p-2 bg-[#fdf3e7] text-[#9c5f25] rounded-xl font-bold">
@@ -251,16 +251,17 @@ export const DashboardPage: React.FC = () => {
               <p className="text-xs text-[#785942]">En yüksek adet ve ciro getiren ürünler</p>
             </div>
           </div>
-          <Link to="/books" className="text-xs font-bold text-[#6f4e37] hover:underline">
-            Tüm Kataloğu Gör →
+          <Link to="/books" className="text-xs font-bold text-[#6f4e37] hover:underline whitespace-nowrap">
+            Tüm Katalog →
           </Link>
         </div>
 
+        {/* Taşmayı Önleyen Yatay Kaydırma Paneli */}
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
+          <table className="w-full text-left text-xs min-w-[640px]">
             <thead>
-              <tr className="border-b border-[#e8dfd1] text-[#785942] uppercase font-bold text-[11px]">
-                <th className="pb-3 pl-2">Sıra</th>
+              <tr className="border-b border-[#e8dfd1] text-[#785942] uppercase font-bold text-[11px] whitespace-nowrap">
+                <th className="pb-3 pl-2 w-12">Sıra</th>
                 <th className="pb-3">Kitap</th>
                 <th className="pb-3">Kategori</th>
                 <th className="pb-3">Birim Fiyat</th>
@@ -272,7 +273,7 @@ export const DashboardPage: React.FC = () => {
             <tbody className="divide-y divide-[#f4ebe1]">
               {topSellers.map((item) => (
                 <tr key={item.book.id} className="hover:bg-[#faf7f2] transition">
-                  <td className="py-3 pl-2">
+                  <td className="py-3 pl-2 whitespace-nowrap">
                     <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
                       item.rank === 1 ? 'bg-amber-400 text-amber-950' :
                       item.rank === 2 ? 'bg-slate-300 text-slate-900' :
@@ -282,33 +283,33 @@ export const DashboardPage: React.FC = () => {
                     </span>
                   </td>
 
-                  <td className="py-3">
-                    <div className="flex items-center space-x-3">
+                  <td className="py-3 pr-4">
+                    <div className="flex items-center space-x-3 min-w-[180px]">
                       <img 
                         src={item.book.coverImage} 
                         alt={item.book.title} 
-                        className="w-9 h-12 object-cover rounded-md shadow-sm border border-[#e5dac8]" 
+                        className="w-8 h-11 object-cover rounded-md shadow-sm border border-[#e5dac8] shrink-0" 
                       />
-                      <div>
-                        <Link to={`/books/${item.book.id}`} className="font-bold text-[#3d2b1f] hover:text-[#8b5e34] block">
+                      <div className="min-w-0">
+                        <Link to={`/books/${item.book.id}`} className="font-bold text-[#3d2b1f] hover:text-[#8b5e34] block truncate">
                           {item.book.title}
                         </Link>
-                        <span className="text-[#8c7462] text-[11px]">{item.book.author}</span>
+                        <span className="text-[#8c7462] text-[11px] block truncate">{item.book.author}</span>
                       </div>
                     </div>
                   </td>
 
-                  <td className="py-3">
+                  <td className="py-3 whitespace-nowrap">
                     <span className="px-2 py-0.5 bg-[#f4ebe1] text-[#6f4e37] rounded-md font-semibold text-[11px]">
                       {item.book.category}
                     </span>
                   </td>
 
-                  <td className="py-3 font-semibold text-[#3d2b1f]">{item.book.price} ₺</td>
-                  <td className="py-3 font-bold text-[#6f4e37]">{item.soldCount} Adet</td>
-                  <td className="py-3 font-bold text-[#2e6f40]">{item.totalRevenue.toLocaleString('tr-TR')} ₺</td>
+                  <td className="py-3 font-semibold text-[#3d2b1f] whitespace-nowrap">{item.book.price} ₺</td>
+                  <td className="py-3 font-bold text-[#6f4e37] whitespace-nowrap">{item.soldCount} Adet</td>
+                  <td className="py-3 font-bold text-[#2e6f40] whitespace-nowrap">{item.totalRevenue.toLocaleString('tr-TR')} ₺</td>
 
-                  <td className="py-3 pr-2 text-right">
+                  <td className="py-3 pr-2 text-right whitespace-nowrap">
                     <Link
                       to={`/books/${item.book.id}`}
                       className="px-2.5 py-1 bg-[#f4ebe1] hover:bg-[#e8dfd1] text-[#6f4e37] rounded-lg text-[11px] font-bold transition"
@@ -323,8 +324,8 @@ export const DashboardPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Son Sipariş Hareketleri */}
-      <div className="bg-white p-6 rounded-2xl border border-[#e8dfd1] shadow-sm">
+      {/* Son Sipariş Hareketleri (MOBİL UYUMLU KAYDIRMA TABLOSU) */}
+      <div className="bg-white p-4 sm:p-6 rounded-2xl border border-[#e8dfd1] shadow-sm">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-2">
             <span className="p-2 bg-[#eaf3ed] text-[#2e6f40] rounded-xl font-bold">
@@ -338,9 +339,9 @@ export const DashboardPage: React.FC = () => {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
+          <table className="w-full text-left text-xs min-w-[580px]">
             <thead>
-              <tr className="border-b border-[#e8dfd1] text-[#785942] uppercase font-bold text-[11px]">
+              <tr className="border-b border-[#e8dfd1] text-[#785942] uppercase font-bold text-[11px] whitespace-nowrap">
                 <th className="pb-3">Sipariş Kodu</th>
                 <th className="pb-3">Müşteri</th>
                 <th className="pb-3">Satın Alınan Kitap</th>
@@ -351,7 +352,7 @@ export const DashboardPage: React.FC = () => {
             </thead>
             <tbody className="divide-y divide-[#f4ebe1]">
               {recentOrders.map((order) => (
-                <tr key={order.id} className="hover:bg-[#faf7f2] transition">
+                <tr key={order.id} className="hover:bg-[#faf7f2] transition whitespace-nowrap">
                   <td className="py-3 font-bold text-[#6f4e37]">{order.id}</td>
                   <td className="py-3 font-semibold text-[#3d2b1f]">{order.customer}</td>
                   <td className="py-3 text-[#543d2b] font-medium">{order.book}</td>
