@@ -66,9 +66,9 @@ export const DashboardPage: React.FC = () => {
   // Recent Orders Activity with Ramazan Çavuş
   const recentOrders = [
     { id: 'ORD-9842', customer: 'Ramazan Çavuş', book: books[0]?.title || 'Clean Code', date: 'Bugün, 14:22', amount: books[0]?.price || 450, status: 'Tamamlandı' },
-    { id: 'ORD-9841', customer: 'Zeynep Kaya', book: books[1]?.title || 'Atomik Alışkanlıklar', date: 'Bugün, 13:45', amount: books[1]?.price || 220, status: 'Kargoda' },
+    { id: 'ORD-9841', customer: 'Ramazan Çavuş', book: books[1]?.title || 'Atomik Alışkanlıklar', date: 'Bugün, 13:45', amount: books[1]?.price || 220, status: 'Kargoda' },
     { id: 'ORD-9840', customer: 'Ramazan Çavuş', book: books[2]?.title || '1984', date: 'Bugün, 12:10', amount: books[2]?.price || 135, status: 'Tamamlandı' },
-    { id: 'ORD-9839', customer: 'Mustafa Demir', book: books[3]?.title || 'Şeker Portakalı', date: 'Dün, 18:30', amount: books[3]?.price || 110, status: 'Hazırlanıyor' },
+    { id: 'ORD-9839', customer: 'Ramazan Çavuş', book: books[3]?.title || 'Şeker Portakalı', date: 'Dün, 18:30', amount: books[3]?.price || 110, status: 'Hazırlanıyor' },
     { id: 'ORD-9838', customer: 'Ramazan Çavuş', book: books[4]?.title || 'Nutuk', date: 'Dün, 16:15', amount: books[4]?.price || 190, status: 'Tamamlandı' },
   ];
 
