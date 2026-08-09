@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { 
   TrendingUp, 
   ShoppingBag, 
@@ -12,10 +12,18 @@ import {
   Plus
 } from 'lucide-react';
 import { useBookContext } from '../context/BookContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export const DashboardPage: React.FC = () => {
-  const { books, setIsAddModalOpen } = useBookContext();
+  const { books, setIsAddModalOpen, viewMode } = useBookContext();
+  const navigate = useNavigate();
+
+  // Müşteri modunda iken dashboard erişilirse otomatik olarak kitap mağazasına yönlendir
+  useEffect(() => {
+    if (viewMode === 'customer') {
+      navigate('/books');
+    }
+  }, [viewMode, navigate]);
 
   // Mock Sales Data Calculations based on actual books list
   const totalStock = books.reduce((acc, b) => acc + (b.stock || 0), 0);

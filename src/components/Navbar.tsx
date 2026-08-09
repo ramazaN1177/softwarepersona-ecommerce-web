@@ -1,12 +1,23 @@
 import React from 'react';
 import { BookOpen, Plus, RefreshCw, BarChart3, LayoutGrid, ShieldCheck, ShoppingCart, Store } from 'lucide-react';
 import { useBookContext } from '../context/BookContext';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 
 export const Navbar: React.FC = () => {
   const { setIsAddModalOpen, resetToDefault, viewMode, setViewMode, cart, setIsCartOpen } = useBookContext();
+  const navigate = useNavigate();
 
   const totalCartCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+
+  const handleToggleViewMode = () => {
+    if (viewMode === 'admin') {
+      setViewMode('customer');
+      navigate('/books');
+    } else {
+      setViewMode('admin');
+      navigate('/');
+    }
+  };
 
   return (
     <header className="bg-[#f2ebdc] border-b border-[#e5dac8] sticky top-0 z-30 shadow-sm backdrop-blur-md bg-opacity-95">
@@ -15,56 +26,66 @@ export const Navbar: React.FC = () => {
           
           {/* Logo */}
           <div className="flex items-center space-x-6">
-            <Link to="/" className="flex items-center space-x-3 group">
+            <Link to={viewMode === 'admin' ? '/' : '/books'} className="flex items-center space-x-3 group">
               <div className="p-2.5 bg-gradient-to-tr from-[#6f4e37] to-[#8b5e34] rounded-xl shadow-md text-[#faf7f2] group-hover:scale-105 transition duration-200">
                 <BookOpen className="h-7 w-7" />
               </div>
               <div>
                 <h1 className="text-xl font-extrabold text-[#3d2b1f] tracking-tight">KitapDünyası</h1>
-                <p className="text-[11px] text-[#785942] font-semibold">E-Ticaret Yönetim Platformu</p>
+                <p className="text-[11px] text-[#785942] font-semibold">
+                  {viewMode === 'admin' ? 'Yönetici Platformu' : 'Online Kitap Mağazası'}
+                </p>
               </div>
             </Link>
 
-            {/* Navigasyon Linkleri (Router) */}
-            <div className="hidden md:flex items-center p-1 bg-[#e9dfce] rounded-xl border border-[#d8cbb7]">
-              <NavLink
-                to="/"
-                end
-                className={({ isActive }: { isActive: boolean }) =>
-                  `flex items-center space-x-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition ${
-                    isActive
-                      ? 'bg-[#6f4e37] text-[#faf7f2] shadow-sm'
-                      : 'text-[#543d2b] hover:text-[#3d2b1f]'
-                  }`
-                }
-              >
-                <BarChart3 className="h-3.5 w-3.5" />
-                <span>Satış & Analiz</span>
-              </NavLink>
+            {/* Navigasyon Linkleri (Yalnızca Admin Modunda İki Sekme Görünür) */}
+            {viewMode === 'admin' ? (
+              <div className="hidden md:flex items-center p-1 bg-[#e9dfce] rounded-xl border border-[#d8cbb7]">
+                <NavLink
+                  to="/"
+                  end
+                  className={({ isActive }: { isActive: boolean }) =>
+                    `flex items-center space-x-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition ${
+                      isActive
+                        ? 'bg-[#6f4e37] text-[#faf7f2] shadow-sm'
+                        : 'text-[#543d2b] hover:text-[#3d2b1f]'
+                    }`
+                  }
+                >
+                  <BarChart3 className="h-3.5 w-3.5" />
+                  <span>Satış & Analiz</span>
+                </NavLink>
 
-              <NavLink
-                to="/books"
-                className={({ isActive }: { isActive: boolean }) =>
-                  `flex items-center space-x-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition ${
-                    isActive
-                      ? 'bg-[#6f4e37] text-[#faf7f2] shadow-sm'
-                      : 'text-[#543d2b] hover:text-[#3d2b1f]'
-                  }`
-                }
-              >
-                <LayoutGrid className="h-3.5 w-3.5" />
-                <span>Kitap Kataloğu</span>
-              </NavLink>
-            </div>
+                <NavLink
+                  to="/books"
+                  className={({ isActive }: { isActive: boolean }) =>
+                    `flex items-center space-x-2 px-3.5 py-1.5 rounded-lg text-xs font-bold transition ${
+                      isActive
+                        ? 'bg-[#6f4e37] text-[#faf7f2] shadow-sm'
+                        : 'text-[#543d2b] hover:text-[#3d2b1f]'
+                    }`
+                  }
+                >
+                  <LayoutGrid className="h-3.5 w-3.5" />
+                  <span>Kitap Kataloğu</span>
+                </NavLink>
+              </div>
+            ) : (
+              /* Müşteri Modunda Tek Temiz Mağaza Linki */
+              <div className="hidden md:flex items-center space-x-2 text-xs font-bold text-[#6f4e37] bg-[#f4ebe1] px-3.5 py-1.5 rounded-xl border border-[#e5dac8]">
+                <LayoutGrid className="h-4 w-4" />
+                <span>Tüm Kitaplarımız & Mağaza</span>
+              </div>
+            )}
           </div>
 
           {/* Sağ Butonlar & Temiz Mod Değiştirici */}
           <div className="flex items-center space-x-3">
             
-            {/* Görünüm Modu Değiştirici (Sade ve Şık Sağ Konumlandırma) */}
+            {/* Mod Değiştirici Buton (Müşteri / Yönetici) */}
             <button
-              onClick={() => setViewMode(viewMode === 'admin' ? 'customer' : 'admin')}
-              className={`inline-flex items-center space-x-2 px-3 py-1.5 text-xs font-bold rounded-xl border transition cursor-pointer ${
+              onClick={handleToggleViewMode}
+              className={`inline-flex items-center space-x-2 px-3.5 py-2 text-xs font-bold rounded-xl border transition cursor-pointer ${
                 viewMode === 'customer'
                   ? 'bg-[#2e6f40] text-white border-[#245833] shadow-sm'
                   : 'bg-[#faf7f2] text-[#6f4e37] border-[#d8cbb7] hover:bg-[#e9dfce]'
@@ -73,13 +94,13 @@ export const Navbar: React.FC = () => {
             >
               {viewMode === 'admin' ? (
                 <>
-                  <Store className="h-3.5 w-3.5" />
-                  <span>Müşteri Mağazası</span>
+                  <Store className="h-4 w-4" />
+                  <span>Müşteri Mağazasına Geç</span>
                 </>
               ) : (
                 <>
-                  <ShieldCheck className="h-3.5 w-3.5" />
-                  <span>Yönetici Paneli</span>
+                  <ShieldCheck className="h-4 w-4" />
+                  <span>Yönetici Paneline Geç</span>
                 </>
               )}
             </button>
