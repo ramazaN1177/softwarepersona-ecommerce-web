@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo, useState } from 'react';
 import { Eye, Edit3, Trash2, Star, ShoppingCart, Check } from 'lucide-react';
 import type { Book } from '../types/book';
 import { useBookContext } from '../context/BookContext';
@@ -8,9 +8,9 @@ interface BookCardProps {
   book: Book;
 }
 
-export const BookCard: React.FC<BookCardProps> = ({ book }) => {
+export const BookCard: React.FC<BookCardProps> = memo(({ book }) => {
   const { setEditingBook, setDeletingBook, viewMode, addToCart } = useBookContext();
-  const [added, setAdded] = React.useState(false);
+  const [added, setAdded] = useState(false);
 
   const isLowStock = book.stock < 10;
 
@@ -29,6 +29,7 @@ export const BookCard: React.FC<BookCardProps> = ({ book }) => {
         <img
           src={book.coverImage || 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=600&q=80'}
           alt={book.title}
+          loading="lazy"
           className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
           onError={(e) => {
             (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=600&q=80';
@@ -145,4 +146,4 @@ export const BookCard: React.FC<BookCardProps> = ({ book }) => {
 
     </div>
   );
-};
+});

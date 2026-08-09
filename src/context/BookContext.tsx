@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useMemo, useCallback } from 'react';
 import type { Book, Category } from '../types/book';
 import { storageService } from '../services/storageService';
 
@@ -80,8 +80,8 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setBooks(loadedBooks);
   }, []);
 
-  // Sepete Ekle
-  const handleAddToCart = (book: Book, quantity: number = 1) => {
+  // Sepete Ekle (useCallback ile memoized)
+  const handleAddToCart = useCallback((book: Book, quantity: number = 1) => {
     setCart(prev => {
       const existing = prev.find(item => item.book.id === book.id);
       if (existing) {
@@ -90,10 +90,10 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       return [...prev, { book, quantity: Math.min(quantity, book.stock) }];
     });
-  };
+  }, []);
 
-  // Sepet Adet Güncelle
-  const handleUpdateCartQuantity = (bookId: string, delta: number) => {
+  // Sepet Adet Güncelle (useCallback ile memoized)
+  const handleUpdateCartQuantity = useCallback((bookId: string, delta: number) => {
     setCart(prev => {
       return prev
         .map(item => {
@@ -107,78 +107,80 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
         })
         .filter(Boolean) as CartItem[];
     });
-  };
+  }, []);
 
   // Sepetten Çıkar
-  const handleRemoveFromCart = (bookId: string) => {
+  const handleRemoveFromCart = useCallback((bookId: string) => {
     setCart(prev => prev.filter(item => item.book.id !== bookId));
-  };
+  }, []);
 
   // Sepeti Temizle
-  const handleClearCart = () => {
+  const handleClearCart = useCallback(() => {
     setCart([]);
-  };
+  }, []);
 
   // Yeni Kitap Ekle
-  const handleAddBook = (bookData: Omit<Book, 'id' | 'createdAt'>) => {
+  const handleAddBook = useCallback((bookData: Omit<Book, 'id' | 'createdAt'>) => {
     const newBook = storageService.addBook(bookData);
     setBooks(prev => [newBook, ...prev]);
     setIsAddModalOpen(false);
-  };
+  }, []);
 
   // Kitap Güncelle
-  const handleUpdateBook = (id: string, updatedFields: Partial<Book>) => {
+  const handleUpdateBook = useCallback((id: string, updatedFields: Partial<Book>) => {
     const updated = storageService.updateBook(id, updatedFields);
     if (updated) {
       setBooks(prev => prev.map(b => (b.id === id ? updated : b)));
     }
     setEditingBook(null);
-  };
+  }, []);
 
   // Kitap Sil
-  const handleDeleteBook = (id: string) => {
+  const handleDeleteBook = useCallback((id: string) => {
     storageService.deleteBook(id);
     setBooks(prev => prev.filter(b => b.id !== id));
     setDeletingBook(null);
-  };
+  }, []);
 
   // Varsayılan Verilere Sıfırla
-  const handleResetToDefault = () => {
+  const handleResetToDefault = useCallback(() => {
     const defaultBooks = storageService.resetToDefault();
     setBooks(defaultBooks);
-  };
+  }, []);
 
   // Filtreleri Temizle
-  const resetFilters = () => {
+  const resetFilters = useCallback(() => {
     setSearchQuery('');
     setSelectedCategory('Tüm Kategoriler');
     setSortOption('newest');
     setMinPrice('');
     setMaxPrice('');
-  };
+  }, []);
 
-  // Canlı Arama, Kategori, Fiyat Aralığı ve Sıralama Filtrelemesi
-  const filteredBooks = books
-    .filter(book => {
-      const matchesSearch = 
-        book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        book.author.toLowerCase().includes(searchQuery.toLowerCase());
-      
-      const matchesCategory = 
-        selectedCategory === 'Tüm Kategoriler' || book.category === selectedCategory;
+  // PERFORMANS OPTİMİZASYONU: useMemo kullanarak Filtreleme & Sıralama İşlemini Caching Yap
+  const filteredBooks = useMemo(() => {
+    return books
+      .filter(book => {
+        const matchesSearch = 
+          book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          book.author.toLowerCase().includes(searchQuery.toLowerCase());
+        
+        const matchesCategory = 
+          selectedCategory === 'Tüm Kategoriler' || book.category === selectedCategory;
 
-      const matchesMinPrice = minPrice === '' || book.price >= Number(minPrice);
-      const matchesMaxPrice = maxPrice === '' || book.price <= Number(maxPrice);
+        const matchesMinPrice = minPrice === '' || book.price >= Number(minPrice);
+        const matchesMaxPrice = maxPrice === '' || book.price <= Number(maxPrice);
 
-      return matchesSearch && matchesCategory && matchesMinPrice && matchesMaxPrice;
-    })
-    .sort((a, b) => {
-      if (sortOption === 'price-asc') return a.price - b.price;
-      if (sortOption === 'price-desc') return b.price - a.price;
-      if (sortOption === 'rating') return (b.rating || 0) - (a.rating || 0);
-      if (sortOption === 'stock') return b.stock - a.stock;
-      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-    });
+        return matchesSearch && matchesCategory && matchesMinPrice && matchesMaxPrice;
+      })
+      .sort((a, b) => {
+        if (sortOption === 'price-asc') return a.price - b.price;
+        if (sortOption === 'price-desc') return b.price - a.price;
+        if (sortOption === 'rating') return (b.rating || 0) - (a.rating || 0);
+        if (sortOption === 'stock') return b.stock - a.stock;
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      });
+  }, [books, searchQuery, selectedCategory, sortOption, minPrice, maxPrice]);
 
   return (
     <BookContext.Provider

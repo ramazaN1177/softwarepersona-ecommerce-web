@@ -1,13 +1,25 @@
+import { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { BookProvider } from './context/BookContext';
 import { Navbar } from './components/Navbar';
-import { DashboardPage } from './pages/DashboardPage';
-import { BooksPage } from './pages/BooksPage';
-import { BookDetailPage } from './pages/BookDetailPage';
 import { BookFormModal } from './components/BookFormModal';
 import { BookDetailModal } from './components/BookDetailModal';
 import { ConfirmModal } from './components/ConfirmModal';
 import { CartDrawer } from './components/CartDrawer';
+import { RefreshCw } from 'lucide-react';
+
+// PERFORMANS OPTİMİZASYONU: Code-splitting & Lazy Loading (Sayfaları ihtiyaç anında yükleme)
+const DashboardPage = lazy(() => import('./pages/DashboardPage').then(m => ({ default: m.DashboardPage })));
+const BooksPage = lazy(() => import('./pages/BooksPage').then(m => ({ default: m.BooksPage })));
+const BookDetailPage = lazy(() => import('./pages/BookDetailPage').then(m => ({ default: m.BookDetailPage })));
+
+// Yükleme Spinner'ı
+const PageLoadingFallback = () => (
+  <div className="flex flex-col items-center justify-center min-h-[50vh] space-y-3">
+    <RefreshCw className="h-8 w-8 text-[#6f4e37] animate-spin" />
+    <span className="text-xs font-bold text-[#785942]">Yükleniyor...</span>
+  </div>
+);
 
 function AppContent() {
   return (
@@ -16,21 +28,23 @@ function AppContent() {
         {/* Üst Navigasyon Çubuğu */}
         <Navbar />
 
-        {/* Sayfa Yönlendirmeleri (React Router) */}
+        {/* Sayfa Yönlendirmeleri (React Router & Suspense) */}
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <Routes>
-            {/* İlk Açılan Sayfa: Satış & Analiz Dashboard */}
-            <Route path="/" element={<DashboardPage />} />
+          <Suspense fallback={<PageLoadingFallback />}>
+            <Routes>
+              {/* İlk Açılan Sayfa: Satış & Analiz Dashboard */}
+              <Route path="/" element={<DashboardPage />} />
 
-            {/* Kitap Kataloğu Sayfası */}
-            <Route path="/books" element={<BooksPage />} />
+              {/* Kitap Kataloğu Sayfası */}
+              <Route path="/books" element={<BooksPage />} />
 
-            {/* Özel Kitap Detay Sayfası */}
-            <Route path="/books/:id" element={<BookDetailPage />} />
+              {/* Özel Kitap Detay Sayfası */}
+              <Route path="/books/:id" element={<BookDetailPage />} />
 
-            {/* Bilinmeyen adresleri Dashboard'a yönlendir */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+              {/* Bilinmeyen adresleri Dashboard'a yönlendir */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </Suspense>
         </main>
       </div>
 
