@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { Book, Category } from '../types/book';
+import type { Book, Category } from '../types/book';
 import { storageService } from '../services/storageService';
 
 interface BookContextType {

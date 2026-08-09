@@ -1,4 +1,4 @@
-import { Book } from '../types/book';
+import type { Book } from '../types/book';
 
 const STORAGE_KEY = 'bookstore_admin_books';
 
