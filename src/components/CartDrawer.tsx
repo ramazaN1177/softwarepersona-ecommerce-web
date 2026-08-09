@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { X, ShoppingBag, Plus, Minus, Trash2, CheckCircle, ArrowRight, ShieldCheck } from 'lucide-react';
 import { useBookContext } from '../context/BookContext';
+import { useLanguage } from '../context/LanguageContext';
 
 export const CartDrawer: React.FC = () => {
   const { cart, isCartOpen, setIsCartOpen, updateCartQuantity, removeFromCart, clearCart } = useBookContext();
+  const { t, language } = useLanguage();
   const [checkoutSuccess, setCheckoutSuccess] = useState(false);
 
   if (!isCartOpen) return null;
@@ -35,8 +37,8 @@ export const CartDrawer: React.FC = () => {
                 <ShoppingBag className="h-5 w-5" />
               </div>
               <div>
-                <h2 className="text-lg font-bold text-[#3d2b1f]">Alışveriş Sepetim</h2>
-                <p className="text-xs text-[#785942]">Toplam {totalItemsCount} Adet Ürün</p>
+                <h2 className="text-lg font-bold text-[#3d2b1f]">{t('cart_title')}</h2>
+                <p className="text-xs text-[#785942]">{language === 'tr' ? `Toplam ${totalItemsCount} Adet Ürün` : `Total ${totalItemsCount} Items`}</p>
               </div>
             </div>
             <button
@@ -53,9 +55,9 @@ export const CartDrawer: React.FC = () => {
               <div className="inline-flex p-4 bg-[#eaf3ed] text-[#2e6f40] rounded-full border border-[#cce3d3]">
                 <CheckCircle className="h-12 w-12" />
               </div>
-              <h3 className="text-xl font-bold text-[#3d2b1f]">Siparişiniz Alındı!</h3>
+              <h3 className="text-xl font-bold text-[#3d2b1f]">{t('cart_order_success')}</h3>
               <p className="text-xs text-[#785942]">
-                Siparişiniz başarıyla işlendi ve kargo hazırlığına alındı. Teşekkür ederiz!
+                {t('cart_order_success_desc')}
               </p>
             </div>
           ) : cart.length === 0 ? (
@@ -64,15 +66,15 @@ export const CartDrawer: React.FC = () => {
               <div className="inline-flex p-4 bg-[#f4ebe1] text-[#8c7462] rounded-full">
                 <ShoppingBag className="h-10 w-10" />
               </div>
-              <h3 className="text-base font-bold text-[#3d2b1f]">Sepetiniz Boş</h3>
+              <h3 className="text-base font-bold text-[#3d2b1f]">{t('cart_empty_title')}</h3>
               <p className="text-xs text-[#785942] max-w-xs mx-auto">
-                Mağazamızdaki harika kitapları inceleyip sepetinize ekleyebilirsiniz.
+                {t('cart_empty_desc')}
               </p>
               <button
                 onClick={() => setIsCartOpen(false)}
                 className="px-4 py-2 bg-[#6f4e37] text-white rounded-xl text-xs font-bold hover:bg-[#5a3e2b] transition"
               >
-                Kitapları İncele
+                {t('dash_all_catalog')}
               </button>
             </div>
           ) : (
@@ -86,7 +88,7 @@ export const CartDrawer: React.FC = () => {
                   <img
                     src={book.coverImage}
                     alt={book.title}
-                    className="w-14 h-20 object-cover rounded-lg border border-[#e2d5c3] shrink-0"
+                    className="w-14 h-20 object-contain rounded-lg border border-[#e2d5c3] shrink-0"
                   />
 
                   <div className="flex-1 min-w-0">
@@ -114,7 +116,7 @@ export const CartDrawer: React.FC = () => {
                       </div>
 
                       <span className="text-[10px] text-[#8c7462]">
-                        (Stok: {book.stock})
+                        ({t('table_sold')}: {book.stock})
                       </span>
                     </div>
                   </div>
@@ -137,15 +139,15 @@ export const CartDrawer: React.FC = () => {
             <div className="p-6 border-t border-[#e8dfd1] bg-white space-y-4">
               <div className="space-y-2 text-xs text-[#543d2b]">
                 <div className="flex justify-between">
-                  <span>Ara Toplam:</span>
+                  <span>{t('cart_subtotal')}:</span>
                   <span className="font-bold text-[#3d2b1f]">{totalAmount.toLocaleString('tr-TR')} ₺</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Kargo Ücreti:</span>
-                  <span className="font-bold text-[#2e6f40] bg-[#eaf3ed] px-2 py-0.5 rounded-md">Ücretsiz Kargo</span>
+                  <span>{t('cart_shipping')}:</span>
+                  <span className="font-bold text-[#2e6f40] bg-[#eaf3ed] px-2 py-0.5 rounded-md">{t('cart_free_shipping')}</span>
                 </div>
                 <div className="flex justify-between text-sm pt-2 border-t border-[#f2ebdc]">
-                  <span className="font-bold text-[#3d2b1f]">Genel Toplam:</span>
+                  <span className="font-bold text-[#3d2b1f]">{t('cart_total')}:</span>
                   <span className="font-extrabold text-[#6f4e37] text-base">{totalAmount.toLocaleString('tr-TR')} ₺</span>
                 </div>
               </div>
@@ -154,13 +156,13 @@ export const CartDrawer: React.FC = () => {
                 onClick={handleCheckout}
                 className="w-full py-3 bg-gradient-to-r from-[#6f4e37] to-[#8b5e34] hover:from-[#5a3e2b] text-[#faf7f2] font-bold text-sm rounded-xl shadow-md flex items-center justify-center space-x-2 transition"
               >
-                <span>Siparişi Tamamla</span>
+                <span>{t('cart_checkout')}</span>
                 <ArrowRight className="h-4 w-4" />
               </button>
 
               <div className="flex items-center justify-center space-x-1 text-[11px] text-[#8c7462] pt-1">
                 <ShieldCheck className="h-3.5 w-3.5 text-[#2e6f40]" />
-                <span>%100 Güvenli Ödeme Garantisi</span>
+                <span>{t('cart_guarantee')}</span>
               </div>
             </div>
           )}

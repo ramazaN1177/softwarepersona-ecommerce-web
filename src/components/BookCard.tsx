@@ -2,6 +2,7 @@ import React, { memo, useState } from 'react';
 import { Eye, Edit3, Trash2, Star, ShoppingCart, Check, Plus, Minus } from 'lucide-react';
 import type { Book } from '../types/book';
 import { useBookContext } from '../context/BookContext';
+import { useLanguage } from '../context/LanguageContext';
 import { Link } from 'react-router-dom';
 
 interface BookCardProps {
@@ -10,6 +11,7 @@ interface BookCardProps {
 
 export const BookCard: React.FC<BookCardProps> = memo(({ book }) => {
   const { setEditingBook, setDeletingBook, viewMode, addToCart } = useBookContext();
+  const { t } = useLanguage();
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
 
@@ -25,7 +27,7 @@ export const BookCard: React.FC<BookCardProps> = memo(({ book }) => {
   return (
     <div className="bg-white border border-[#e8dfd1] rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition duration-300 hover:border-[#cbb9a3] flex flex-col group">
       
-      {/* Kapak Fotoğrafı (Çerçeve İçi Çerçeve Etkisini Kaldıran Doğal Görünüm) */}
+      {/* Kapak Fotoğrafı */}
       <Link to={`/books/${book.id}`} className="relative h-60 sm:h-64 bg-[#f4ebe1] flex items-center justify-center p-3 overflow-hidden block">
         <img
           src={book.coverImage || 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=600&q=80'}
@@ -54,7 +56,7 @@ export const BookCard: React.FC<BookCardProps> = memo(({ book }) => {
               ? 'bg-[#fdf2f2] text-[#c0392b] border border-[#f8d7da]' 
               : 'bg-[#eaf3ed] text-[#2e6f40] border border-[#cce3d3]'
           }`}>
-            {isLowStock ? `Kritik Stok: ${book.stock}` : `Stok: ${book.stock}`}
+            {isLowStock ? `${t('stock_critical')}: ${book.stock}` : `${t('stock_in')}: ${book.stock}`}
           </span>
         </div>
       </Link>
@@ -114,12 +116,12 @@ export const BookCard: React.FC<BookCardProps> = memo(({ book }) => {
                 {added ? (
                   <>
                     <Check className="h-3.5 w-3.5" />
-                    <span>Eklendi ({quantity})</span>
+                    <span>{t('btn_added')} ({quantity})</span>
                   </>
                 ) : (
                   <>
                     <ShoppingCart className="h-3.5 w-3.5" />
-                    <span>Sepete Ekle</span>
+                    <span>{t('btn_add_cart')}</span>
                   </>
                 )}
               </button>
@@ -128,11 +130,11 @@ export const BookCard: React.FC<BookCardProps> = memo(({ book }) => {
           ) : (
             /* Admin Görünümü Butonları */
             <div className="flex items-center justify-between">
-              <span className="text-xs text-[#785942] font-semibold">Stok: {book.stock} Adet</span>
+              <span className="text-xs text-[#785942] font-semibold">{t('stock_in')}: {book.stock}</span>
               <div className="flex items-center space-x-1">
                 <Link
                   to={`/books/${book.id}`}
-                  title="Detaylı İncele"
+                  title={t('btn_detail')}
                   className="p-2 text-[#785942] hover:text-[#3d2b1f] hover:bg-[#f5efe6] rounded-lg transition"
                 >
                   <Eye className="h-4 w-4" />
@@ -140,7 +142,7 @@ export const BookCard: React.FC<BookCardProps> = memo(({ book }) => {
 
                 <button
                   onClick={() => setEditingBook(book)}
-                  title="Düzenle"
+                  title={t('btn_edit')}
                   className="p-2 text-[#785942] hover:text-[#8b5e34] hover:bg-[#f5efe6] rounded-lg transition"
                 >
                   <Edit3 className="h-4 w-4" />
@@ -148,7 +150,7 @@ export const BookCard: React.FC<BookCardProps> = memo(({ book }) => {
 
                 <button
                   onClick={() => setDeletingBook(book)}
-                  title="Sil"
+                  title={t('btn_delete')}
                   className="p-2 text-[#785942] hover:text-[#c0392b] hover:bg-[#fdf2f2] rounded-lg transition"
                 >
                   <Trash2 className="h-4 w-4" />

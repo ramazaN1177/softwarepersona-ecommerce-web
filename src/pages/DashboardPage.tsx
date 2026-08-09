@@ -14,10 +14,12 @@ import {
   Calendar
 } from 'lucide-react';
 import { useBookContext } from '../context/BookContext';
+import { useLanguage } from '../context/LanguageContext';
 import { Link, useNavigate } from 'react-router-dom';
 
 export const DashboardPage: React.FC = () => {
   const { books, setIsAddModalOpen, viewMode } = useBookContext();
+  const { t, language } = useLanguage();
   const navigate = useNavigate();
 
   // Müşteri modunda iken dashboard erişilirse otomatik olarak kitap mağazasına yönlendir
@@ -38,14 +40,14 @@ export const DashboardPage: React.FC = () => {
 
   // Monthly Sales Bar Data
   const monthlyData = [
-    { month: 'Oca', revenue: 84000, height: '45%' },
-    { month: 'Şub', revenue: 92000, height: '52%' },
-    { month: 'Mar', revenue: 105000, height: '60%' },
-    { month: 'Nis', revenue: 118000, height: '70%' },
-    { month: 'May', revenue: 110000, height: '65%' },
-    { month: 'Haz', revenue: 132000, height: '82%' },
-    { month: 'Tem', revenue: 128000, height: '78%' },
-    { month: 'Ağu', revenue: 148450, height: '95%' },
+    { month: language === 'tr' ? 'Oca' : 'Jan', revenue: 84000, height: '45%' },
+    { month: language === 'tr' ? 'Şub' : 'Feb', revenue: 92000, height: '52%' },
+    { month: language === 'tr' ? 'Mar' : 'Mar', revenue: 105000, height: '60%' },
+    { month: language === 'tr' ? 'Nis' : 'Apr', revenue: 118000, height: '70%' },
+    { month: language === 'tr' ? 'May' : 'May', revenue: 110000, height: '65%' },
+    { month: language === 'tr' ? 'Haz' : 'Jun', revenue: 132000, height: '82%' },
+    { month: language === 'tr' ? 'Tem' : 'Jul', revenue: 128000, height: '78%' },
+    { month: language === 'tr' ? 'Ağu' : 'Aug', revenue: 148450, height: '95%' },
   ];
 
   // Category Share Breakdown
@@ -67,11 +69,11 @@ export const DashboardPage: React.FC = () => {
 
   // Recent Orders Activity with Ramazan Çavuş
   const recentOrders = [
-    { id: 'ORD-9842', customer: 'Ramazan Çavuş', book: books[0]?.title || 'Clean Code', date: 'Bugün, 14:22', amount: books[0]?.price || 450, status: 'Tamamlandı' },
-    { id: 'ORD-9841', customer: 'Ramazan Çavuş', book: books[1]?.title || 'Atomik Alışkanlıklar', date: 'Bugün, 13:45', amount: books[1]?.price || 220, status: 'Kargoda' },
-    { id: 'ORD-9840', customer: 'Ramazan Çavuş', book: books[2]?.title || '1984', date: 'Bugün, 12:10', amount: books[2]?.price || 135, status: 'Tamamlandı' },
-    { id: 'ORD-9839', customer: 'Ramazan Çavuş', book: books[3]?.title || 'Şeker Portakalı', date: 'Dün, 18:30', amount: books[3]?.price || 110, status: 'Hazırlanıyor' },
-    { id: 'ORD-9838', customer: 'Ramazan Çavuş', book: books[4]?.title || 'Nutuk', date: 'Dün, 16:15', amount: books[4]?.price || 190, status: 'Tamamlandı' },
+    { id: 'ORD-9842', customer: 'Ramazan Çavuş', book: books[0]?.title || 'Clean Code', date: language === 'tr' ? 'Bugün, 14:22' : 'Today, 14:22', amount: books[0]?.price || 450, status: t('status_completed') },
+    { id: 'ORD-9841', customer: 'Ramazan Çavuş', book: books[1]?.title || 'Atomik Alışkanlıklar', date: language === 'tr' ? 'Bugün, 13:45' : 'Today, 13:45', amount: books[1]?.price || 220, status: t('status_shipping') },
+    { id: 'ORD-9840', customer: 'Ramazan Çavuş', book: books[2]?.title || '1984', date: language === 'tr' ? 'Bugün, 12:10' : 'Today, 12:10', amount: books[2]?.price || 135, status: t('status_completed') },
+    { id: 'ORD-9839', customer: 'Ramazan Çavuş', book: books[3]?.title || 'Şeker Portakalı', date: language === 'tr' ? 'Dün, 18:30' : 'Yesterday, 18:30', amount: books[3]?.price || 110, status: t('status_preparing') },
+    { id: 'ORD-9838', customer: 'Ramazan Çavuş', book: books[4]?.title || 'Nutuk', date: language === 'tr' ? 'Dün, 16:15' : 'Yesterday, 16:15', amount: books[4]?.price || 190, status: t('status_completed') },
   ];
 
   return (
@@ -84,9 +86,9 @@ export const DashboardPage: React.FC = () => {
             <span className="p-2 bg-[#f4ebe1] text-[#6f4e37] rounded-xl font-bold">
               <PieChartIcon className="h-5 w-5" />
             </span>
-            <h2 className="text-lg sm:text-xl font-bold text-[#3d2b1f]">Satış & Analiz Dashboard</h2>
+            <h2 className="text-lg sm:text-xl font-bold text-[#3d2b1f]">{t('dashboard_title')}</h2>
           </div>
-          <p className="text-xs text-[#785942] mt-1">Görsel grafikle satış hacmi, ciro, stok analizleri ve en çok satan kitaplar</p>
+          <p className="text-xs text-[#785942] mt-1">{t('dashboard_desc')}</p>
         </div>
 
         <div className="flex items-center space-x-2 sm:space-x-3">
@@ -95,14 +97,14 @@ export const DashboardPage: React.FC = () => {
             className="inline-flex items-center space-x-1.5 px-3 py-2 text-xs font-bold text-[#6f4e37] bg-[#f4ebe1] hover:bg-[#e8dfd1] rounded-xl border border-[#e5dac8] transition"
           >
             <BookOpen className="h-4 w-4" />
-            <span>Kataloğa Git</span>
+            <span>{t('dash_all_catalog')}</span>
           </Link>
           <button
             onClick={() => setIsAddModalOpen(true)}
             className="inline-flex items-center space-x-1.5 px-3.5 py-2 text-xs font-bold text-[#faf7f2] bg-gradient-to-r from-[#6f4e37] to-[#8b5e34] hover:from-[#5a3e2b] rounded-xl shadow-sm transition"
           >
             <Plus className="h-4 w-4" />
-            <span>Kitap Ekle</span>
+            <span>{t('nav_add_book')}</span>
           </button>
         </div>
       </div>
@@ -113,7 +115,7 @@ export const DashboardPage: React.FC = () => {
         {/* Aylık Ciro */}
         <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#e8dfd1] shadow-sm">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-semibold text-[#785942]">Aylık Toplam Ciro</span>
+            <span className="text-xs font-semibold text-[#785942]">{t('dash_monthly_revenue')}</span>
             <span className="p-2 bg-[#f4ebe1] text-[#6f4e37] rounded-xl">
               <DollarSign className="h-4 w-4 sm:h-5 sm:w-5" />
             </span>
@@ -121,29 +123,29 @@ export const DashboardPage: React.FC = () => {
           <h3 className="text-xl sm:text-2xl font-bold text-[#3d2b1f]">{monthlyRevenue.toLocaleString('tr-TR')} ₺</h3>
           <div className="flex items-center mt-2 text-[11px] sm:text-xs font-semibold text-[#2e6f40]">
             <ArrowUpRight className="h-3.5 w-3.5 mr-0.5" />
-            <span>+%18.4 geçen aya göre</span>
+            <span>+%18.4</span>
           </div>
         </div>
 
         {/* Satılan Kitap Adedi */}
         <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#e8dfd1] shadow-sm">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-semibold text-[#785942]">Satılan Kitap Adedi</span>
+            <span className="text-xs font-semibold text-[#785942]">{t('dash_sold_units')}</span>
             <span className="p-2 bg-[#eaf3ed] text-[#2e6f40] rounded-xl">
               <ShoppingBag className="h-4 w-4 sm:h-5 sm:w-5" />
             </span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-[#3d2b1f]">{monthlySoldUnits.toLocaleString('tr-TR')} Adet</h3>
+          <h3 className="text-xl sm:text-2xl font-bold text-[#3d2b1f]">{monthlySoldUnits.toLocaleString('tr-TR')}</h3>
           <div className="flex items-center mt-2 text-[11px] sm:text-xs font-semibold text-[#2e6f40]">
             <ArrowUpRight className="h-3.5 w-3.5 mr-0.5" />
-            <span>+%12.5 geçen aya göre</span>
+            <span>+%12.5</span>
           </div>
         </div>
 
         {/* Ortalama Sepet Tutarı */}
         <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#e8dfd1] shadow-sm">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-semibold text-[#785942]">Ortalama Sepet Tutarı</span>
+            <span className="text-xs font-semibold text-[#785942]">{t('dash_avg_basket')}</span>
             <span className="p-2 bg-[#fdf3e7] text-[#9c5f25] rounded-xl">
               <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5" />
             </span>
@@ -151,21 +153,21 @@ export const DashboardPage: React.FC = () => {
           <h3 className="text-xl sm:text-2xl font-bold text-[#3d2b1f]">{avgOrderValue} ₺</h3>
           <div className="flex items-center mt-2 text-[11px] sm:text-xs font-semibold text-[#2e6f40]">
             <ArrowUpRight className="h-3.5 w-3.5 mr-0.5" />
-            <span>+%5.2 sepet artışı</span>
+            <span>+%5.2</span>
           </div>
         </div>
 
         {/* Aktif Stok Değeri */}
         <div className="bg-white p-4 sm:p-5 rounded-2xl border border-[#e8dfd1] shadow-sm">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-semibold text-[#785942]">Aktif Stok Değeri</span>
+            <span className="text-xs font-semibold text-[#785942]">{t('dash_stock_value')}</span>
             <span className="p-2 bg-[#f4ebe1] text-[#6f4e37] rounded-xl">
               <Package className="h-4 w-4 sm:h-5 sm:w-5" />
             </span>
           </div>
           <h3 className="text-xl sm:text-2xl font-bold text-[#3d2b1f]">{totalValuation.toLocaleString('tr-TR')} ₺</h3>
           <div className="flex items-center mt-2 text-[11px] sm:text-xs font-semibold text-[#785942]">
-            <span>{totalStock} Adet Ürün Depoda</span>
+            <span>{totalStock} {language === 'tr' ? 'Adet Depoda' : 'Items in Stock'}</span>
           </div>
         </div>
 
@@ -178,8 +180,8 @@ export const DashboardPage: React.FC = () => {
         <div className="lg:col-span-2 bg-white p-5 sm:p-6 rounded-2xl border border-[#e8dfd1] shadow-sm flex flex-col justify-between">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h3 className="text-base font-bold text-[#3d2b1f]">Aylık Satış & Ciro Grafiği</h3>
-              <p className="text-xs text-[#785942]">Son 8 ayın toplam ciro gelişimi</p>
+              <h3 className="text-base font-bold text-[#3d2b1f]">{t('dash_chart_title')}</h3>
+              <p className="text-xs text-[#785942]">{t('dash_chart_sub')}</p>
             </div>
             <div className="flex items-center space-x-2">
               <span className="w-2.5 h-2.5 rounded-full bg-[#6f4e37]"></span>
@@ -205,15 +207,15 @@ export const DashboardPage: React.FC = () => {
           </div>
 
           <div className="flex flex-col sm:flex-row justify-between sm:items-center text-xs text-[#8c7462] pt-4 gap-1">
-            <span>En Yüksek Ciro: <b>Ağustos (148,450 ₺)</b></span>
-            <span>Ortalama Aylık Ciro: <b>114,680 ₺</b></span>
+            <span>{language === 'tr' ? 'En Yüksek Ciro:' : 'Highest Revenue:'} <b>148,450 ₺</b></span>
+            <span>{language === 'tr' ? 'Ortalama Aylık Ciro:' : 'Avg Monthly Revenue:'} <b>114,680 ₺</b></span>
           </div>
         </div>
 
         {/* Kategori Bazlı Dağılım */}
         <div className="bg-white p-5 sm:p-6 rounded-2xl border border-[#e8dfd1] shadow-sm flex flex-col justify-between">
           <div>
-            <h3 className="text-base font-bold text-[#3d2b1f] mb-1">Kategori Satış Payları</h3>
+            <h3 className="text-base font-bold text-[#3d2b1f] mb-1">{t('dash_cat_title')}</h3>
             <p className="text-xs text-[#785942] mb-6">Kategorilerin toplam satış içindeki oranı</p>
 
             <div className="space-y-4">
@@ -221,7 +223,7 @@ export const DashboardPage: React.FC = () => {
                 <div key={idx} className="space-y-1.5">
                   <div className="flex justify-between text-xs font-semibold">
                     <span className="text-[#3d2b1f] truncate pr-2">{cat.name}</span>
-                    <span className="text-[#6f4e37] shrink-0">%{cat.percent} ({cat.count} Adet)</span>
+                    <span className="text-[#6f4e37] shrink-0">%{cat.percent} ({cat.count})</span>
                   </div>
                   <div className="w-full h-2.5 bg-[#f4ebe1] rounded-full overflow-hidden">
                     <div 
@@ -235,7 +237,7 @@ export const DashboardPage: React.FC = () => {
           </div>
 
           <div className="mt-6 pt-4 border-t border-[#f2ebdc] text-center">
-            <p className="text-xs text-[#785942]">Lider Kategori: <b className="text-[#6f4e37]">Roman & Edebiyat (%35)</b></p>
+            <p className="text-xs text-[#785942]">{language === 'tr' ? 'Lider Kategori:' : 'Leading Category:'} <b className="text-[#6f4e37]">Roman & Edebiyat (%35)</b></p>
           </div>
         </div>
 
@@ -249,12 +251,12 @@ export const DashboardPage: React.FC = () => {
               <Trophy className="h-5 w-5" />
             </span>
             <div>
-              <h3 className="text-base font-bold text-[#3d2b1f]">En Çok Satan Kitaplar (Top 5)</h3>
-              <p className="text-xs text-[#785942]">En yüksek adet ve ciro getiren ürünler</p>
+              <h3 className="text-base font-bold text-[#3d2b1f]">{t('dash_top_title')}</h3>
+              <p className="text-xs text-[#785942]">{t('dash_top_sub')}</p>
             </div>
           </div>
           <Link to="/books" className="text-xs font-bold text-[#6f4e37] hover:underline whitespace-nowrap">
-            Tüm Katalog →
+            {t('dash_all_catalog')} →
           </Link>
         </div>
 
@@ -262,13 +264,13 @@ export const DashboardPage: React.FC = () => {
           <table className="w-full text-left text-xs min-w-[640px]">
             <thead>
               <tr className="border-b border-[#e8dfd1] text-[#785942] uppercase font-bold text-[11px] whitespace-nowrap">
-                <th className="pb-3 pl-2 w-12">Sıra</th>
-                <th className="pb-3">Kitap</th>
-                <th className="pb-3">Kategori</th>
-                <th className="pb-3">Birim Fiyat</th>
-                <th className="pb-3">Satılan Adet</th>
-                <th className="pb-3">Toplam Kazanç</th>
-                <th className="pb-3 pr-2 text-right">Detay Sayfası</th>
+                <th className="pb-3 pl-2 w-12">{t('table_rank')}</th>
+                <th className="pb-3">{t('table_book')}</th>
+                <th className="pb-3">{t('table_category')}</th>
+                <th className="pb-3">{t('table_price')}</th>
+                <th className="pb-3">{t('table_sold')}</th>
+                <th className="pb-3">{t('table_revenue')}</th>
+                <th className="pb-3 pr-2 text-right">{t('table_detail')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#f4ebe1]">
@@ -307,7 +309,7 @@ export const DashboardPage: React.FC = () => {
                   </td>
 
                   <td className="py-3 font-semibold text-[#3d2b1f] whitespace-nowrap">{item.book.price} ₺</td>
-                  <td className="py-3 font-bold text-[#6f4e37] whitespace-nowrap">{item.soldCount} Adet</td>
+                  <td className="py-3 font-bold text-[#6f4e37] whitespace-nowrap">{item.soldCount}</td>
                   <td className="py-3 font-bold text-[#2e6f40] whitespace-nowrap">{item.totalRevenue.toLocaleString('tr-TR')} ₺</td>
 
                   <td className="py-3 pr-2 text-right whitespace-nowrap">
@@ -315,7 +317,7 @@ export const DashboardPage: React.FC = () => {
                       to={`/books/${item.book.id}`}
                       className="px-2.5 py-1 bg-[#f4ebe1] hover:bg-[#e8dfd1] text-[#6f4e37] rounded-lg text-[11px] font-bold transition"
                     >
-                      İncele →
+                      {t('btn_detail')} →
                     </Link>
                   </td>
                 </tr>
@@ -325,7 +327,7 @@ export const DashboardPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Son Sipariş Hareketleri (100% MOBİL UYUMLU DUAL LAYOUT) */}
+      {/* Son Sipariş Hareketleri */}
       <div className="bg-white p-4 sm:p-6 rounded-2xl border border-[#e8dfd1] shadow-sm">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-2">
@@ -333,21 +335,21 @@ export const DashboardPage: React.FC = () => {
               <Clock className="h-5 w-5" />
             </span>
             <div>
-              <h3 className="text-base font-bold text-[#3d2b1f]">Son Sipariş Hareketleri</h3>
-              <p className="text-xs text-[#785942]">Sistemde gerçekleşen canlı sipariş akışı</p>
+              <h3 className="text-base font-bold text-[#3d2b1f]">{t('dash_recent_title')}</h3>
+              <p className="text-xs text-[#785942]">{t('dash_recent_sub')}</p>
             </div>
           </div>
         </div>
 
-        {/* MOBİL GÖRÜNÜM KARTLARI (Telefon Ekranları İçin Özel Kart Tasarımı) */}
+        {/* MOBİL GÖRÜNÜM KARTLARI */}
         <div className="block sm:hidden space-y-3">
           {recentOrders.map((order) => (
             <div key={order.id} className="p-3.5 bg-[#faf7f2] rounded-xl border border-[#e8dfd1] space-y-2">
               <div className="flex items-center justify-between">
                 <span className="font-extrabold text-[#6f4e37] text-xs">{order.id}</span>
                 <span className={`px-2 py-0.5 rounded-lg text-[10px] font-bold ${
-                  order.status === 'Tamamlandı' ? 'bg-[#eaf3ed] text-[#2e6f40]' :
-                  order.status === 'Kargoda' ? 'bg-[#fdf3e7] text-[#9c5f25]' : 'bg-[#f4ebe1] text-[#6f4e37]'
+                  order.status === t('status_completed') ? 'bg-[#eaf3ed] text-[#2e6f40]' :
+                  order.status === t('status_shipping') ? 'bg-[#fdf3e7] text-[#9c5f25]' : 'bg-[#f4ebe1] text-[#6f4e37]'
                 }`}>
                   {order.status}
                 </span>
@@ -359,7 +361,7 @@ export const DashboardPage: React.FC = () => {
               </div>
 
               <div className="text-xs text-[#543d2b] font-semibold bg-white p-2 rounded-lg border border-[#f2ebdc]">
-                Kitap: <span className="font-bold text-[#3d2b1f]">{order.book}</span>
+                {t('table_book')}: <span className="font-bold text-[#3d2b1f]">{order.book}</span>
               </div>
 
               <div className="flex items-center justify-between pt-1 text-[11px] text-[#8c7462]">
@@ -373,17 +375,17 @@ export const DashboardPage: React.FC = () => {
           ))}
         </div>
 
-        {/* MASAÜSTÜ VE TABLET GÖRÜNÜM TABLOSU */}
+        {/* MASAÜSTÜ TABLOSU */}
         <div className="hidden sm:block overflow-x-auto">
           <table className="w-full text-left text-xs min-w-[580px]">
             <thead>
               <tr className="border-b border-[#e8dfd1] text-[#785942] uppercase font-bold text-[11px] whitespace-nowrap">
-                <th className="pb-3">Sipariş Kodu</th>
-                <th className="pb-3">Müşteri</th>
-                <th className="pb-3">Satın Alınan Kitap</th>
-                <th className="pb-3">Tarih</th>
-                <th className="pb-3">Tutar</th>
-                <th className="pb-3 text-right">Durum</th>
+                <th className="pb-3">{t('table_order_code')}</th>
+                <th className="pb-3">{t('table_customer')}</th>
+                <th className="pb-3">{t('table_book')}</th>
+                <th className="pb-3">{t('table_date')}</th>
+                <th className="pb-3">{t('table_amount')}</th>
+                <th className="pb-3 text-right">{t('table_status')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#f4ebe1]">
@@ -396,8 +398,8 @@ export const DashboardPage: React.FC = () => {
                   <td className="py-3 font-bold text-[#3d2b1f]">{order.amount} ₺</td>
                   <td className="py-3 text-right">
                     <span className={`px-2.5 py-1 rounded-lg text-[11px] font-bold ${
-                      order.status === 'Tamamlandı' ? 'bg-[#eaf3ed] text-[#2e6f40]' :
-                      order.status === 'Kargoda' ? 'bg-[#fdf3e7] text-[#9c5f25]' : 'bg-[#f4ebe1] text-[#6f4e37]'
+                      order.status === t('status_completed') ? 'bg-[#eaf3ed] text-[#2e6f40]' :
+                      order.status === t('status_shipping') ? 'bg-[#fdf3e7] text-[#9c5f25]' : 'bg-[#f4ebe1] text-[#6f4e37]'
                     }`}>
                       {order.status}
                     </span>
