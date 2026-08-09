@@ -5,7 +5,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 
 export const Navbar: React.FC = () => {
-  const { setIsAddModalOpen, resetToDefault, viewMode, setViewMode, cart, setIsCartOpen } = useBookContext();
+  const { setIsAddModalOpen, setIsResetConfirmOpen, viewMode, setViewMode, cart, setIsCartOpen } = useBookContext();
   const { language, setLanguage, t } = useLanguage();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -88,7 +88,7 @@ export const Navbar: React.FC = () => {
             )}
           </div>
 
-          {/* Sağ Butonlar (Dil Değiştirici + Mod Değiştirici) */}
+          {/* Sağ Butonlar (Dil Değiştirici + Mod Değiştirici + Sıfırla + Ekle) */}
           <div className="flex items-center space-x-1.5 sm:space-x-2.5">
             
             {/* TR / EN Dil Seçici Butonu (Language Switcher) */}
@@ -142,25 +142,21 @@ export const Navbar: React.FC = () => {
               </button>
             )}
 
-            {/* Admin Modu Aksiyon Butonları */}
+            {/* Admin Modu Aksiyon Butonları (Özel Tasarım Sıfırla Modalı) */}
             {viewMode === 'admin' && (
               <>
                 <button
-                  onClick={() => {
-                    if (window.confirm(t('nav_reset_confirm'))) {
-                      resetToDefault();
-                    }
-                  }}
+                  onClick={() => setIsResetConfirmOpen(true)}
                   title="Örnek Verilere Sıfırla"
-                  className="hidden md:inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium text-[#543d2b] bg-[#e9dfce] hover:bg-[#dfd3c0] rounded-xl border border-[#d8cbb7] transition duration-150"
+                  className="inline-flex items-center space-x-1 sm:space-x-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-bold text-[#543d2b] bg-[#e9dfce] hover:bg-[#dfd3c0] rounded-xl border border-[#d8cbb7] transition duration-150 cursor-pointer"
                 >
                   <RefreshCw className="h-3.5 w-3.5" />
-                  <span>{t('nav_reset')}</span>
+                  <span className="hidden xs:inline">{t('nav_reset')}</span>
                 </button>
 
                 <button
                   onClick={() => setIsAddModalOpen(true)}
-                  className="inline-flex items-center space-x-1 sm:space-x-1.5 px-2.5 sm:px-3.5 py-1.5 text-xs font-semibold text-[#faf7f2] bg-gradient-to-r from-[#6f4e37] to-[#8b5e34] hover:from-[#5a3e2b] rounded-xl shadow-md transition duration-200"
+                  className="inline-flex items-center space-x-1 sm:space-x-1.5 px-2.5 sm:px-3.5 py-1.5 text-xs font-semibold text-[#faf7f2] bg-gradient-to-r from-[#6f4e37] to-[#8b5e34] hover:from-[#5a3e2b] rounded-xl shadow-md transition duration-200 cursor-pointer"
                 >
                   <Plus className="h-4 w-4 text-[#faf7f2]" />
                   <span className="hidden sm:inline">{t('nav_add_book')}</span>
@@ -180,7 +176,7 @@ export const Navbar: React.FC = () => {
 
         </div>
 
-        {/* Mobil Dropdown Menü (Admin Sekmeleri) */}
+        {/* Mobil Dropdown Menü (Admin Sekmeleri & Sıfırla) */}
         {mobileMenuOpen && viewMode === 'admin' && (
           <div className="md:hidden py-3 border-t border-[#e5dac8] space-y-2 animate-fadeIn">
             <NavLink
@@ -209,6 +205,17 @@ export const Navbar: React.FC = () => {
               <LayoutGrid className="h-4 w-4" />
               <span>{t('nav_catalog')}</span>
             </NavLink>
+
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                setIsResetConfirmOpen(true);
+              }}
+              className="w-full flex items-center space-x-2 px-4 py-2.5 rounded-xl text-xs font-bold bg-[#f4ebe1] text-[#6f4e37] border border-[#e5dac8]"
+            >
+              <RefreshCw className="h-4 w-4" />
+              <span>{t('nav_reset')}</span>
+            </button>
           </div>
         )}
 

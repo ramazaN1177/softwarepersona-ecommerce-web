@@ -52,6 +52,8 @@ interface BookContextType {
   setViewingBook: (book: Book | null) => void;
   deletingBook: Book | null;
   setDeletingBook: (book: Book | null) => void;
+  isResetConfirmOpen: boolean;
+  setIsResetConfirmOpen: (open: boolean) => void;
 }
 
 const BookContext = createContext<BookContextType | undefined>(undefined);
@@ -74,6 +76,7 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [editingBook, setEditingBook] = useState<Book | null>(null);
   const [viewingBook, setViewingBook] = useState<Book | null>(null);
   const [deletingBook, setDeletingBook] = useState<Book | null>(null);
+  const [isResetConfirmOpen, setIsResetConfirmOpen] = useState(false);
 
   // İlk yüklemede LocalStorage'dan verileri çek
   useEffect(() => {
@@ -155,6 +158,7 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const handleResetToDefault = useCallback(() => {
     const defaultBooks = storageService.resetToDefault();
     setBooks(defaultBooks);
+    setIsResetConfirmOpen(false);
     toast.success('Tüm kitaplar varsayılan verilere sıfırlandı.');
   }, []);
 
@@ -229,7 +233,9 @@ export const BookProvider: React.FC<{ children: React.ReactNode }> = ({ children
         viewingBook,
         setViewingBook,
         deletingBook,
-        setDeletingBook
+        setDeletingBook,
+        isResetConfirmOpen,
+        setIsResetConfirmOpen
       }}
     >
       {children}
