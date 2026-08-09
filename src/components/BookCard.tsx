@@ -25,20 +25,17 @@ export const BookCard: React.FC<BookCardProps> = memo(({ book }) => {
   return (
     <div className="bg-white border border-[#e8dfd1] rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition duration-300 hover:border-[#cbb9a3] flex flex-col group">
       
-      {/* Kapak Fotoğrafı & Badge'ler */}
-      <Link to={`/books/${book.id}`} className="relative h-56 sm:h-64 overflow-hidden bg-[#f4ebe1] block">
+      {/* Kapak Fotoğrafı (Çerçeve İçi Çerçeve Etkisini Kaldıran Doğal Görünüm) */}
+      <Link to={`/books/${book.id}`} className="relative h-60 sm:h-64 bg-[#f4ebe1] flex items-center justify-center p-3 overflow-hidden block">
         <img
           src={book.coverImage || 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=600&q=80'}
           alt={book.title}
           loading="lazy"
-          className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+          className="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-500"
           onError={(e) => {
             (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=600&q=80';
           }}
         />
-
-        {/* Subtle Bottom Shadow Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60" />
 
         {/* Kategori Badge */}
         <span className="absolute top-3 left-3 bg-white/95 backdrop-blur-md text-[#6f4e37] text-[11px] font-bold px-2.5 py-1 rounded-lg border border-[#e5dac8] shadow-sm">
@@ -80,13 +77,12 @@ export const BookCard: React.FC<BookCardProps> = memo(({ book }) => {
           </p>
         </div>
 
-        {/* Alt Butonlar ve İşlemler (Admin Modu vs Müşteri Modu) */}
+        {/* Alt Butonlar ve İşlemler */}
         <div className="pt-3.5 mt-4 border-t border-[#f2ebdc]">
           {viewMode === 'customer' ? (
-            /* Müşteri Görünümünde Adet Seçici + Sepete Ekle Panel (UX) */
+            /* Müşteri Görünümünde Adet Seçici (- 1 +) */
             <div className="flex flex-col sm:flex-row items-center gap-2">
               
-              {/* Kart Üzerinde Adet Değiştirici (- 1 +) */}
               <div className="flex items-center border border-[#d8cbb7] bg-[#faf7f2] rounded-xl p-0.5 w-full sm:w-auto justify-between sm:justify-start">
                 <button
                   type="button"
@@ -107,7 +103,6 @@ export const BookCard: React.FC<BookCardProps> = memo(({ book }) => {
                 </button>
               </div>
 
-              {/* Sepete Ekle Butonu */}
               <button
                 onClick={handleAddToCart}
                 className={`w-full flex-1 py-2 px-3 rounded-xl text-xs font-bold transition flex items-center justify-center space-x-1.5 shadow-sm ${

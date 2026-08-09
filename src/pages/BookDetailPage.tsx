@@ -91,13 +91,13 @@ export const BookDetailPage: React.FC = () => {
       <div className="bg-white border border-[#e8dfd1] rounded-2xl overflow-hidden shadow-sm p-6 md:p-8">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
           
-          {/* Sol: Büyük Kapak Resmi */}
+          {/* Sol: Büyük Kapak Resmi (Çerçeve İçi Çerçeve Etkisiz Doğal Görünüm) */}
           <div className="md:col-span-5 flex flex-col items-center">
-            <div className="relative w-full max-w-sm h-96 rounded-2xl overflow-hidden bg-[#f4ebe1] border border-[#e2d5c3] shadow-md">
+            <div className="relative w-full max-w-sm h-[400px] rounded-2xl overflow-hidden bg-[#f4ebe1] flex items-center justify-center p-4">
               <img
                 src={book.coverImage}
                 alt={book.title}
-                className="w-full h-full object-cover"
+                className="max-h-full max-w-full object-contain rounded-md"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?auto=format&fit=crop&w=600&q=80';
                 }}
