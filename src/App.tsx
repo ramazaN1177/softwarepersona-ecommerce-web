@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { BookProvider } from './context/BookContext';
+import { LanguageProvider } from './context/LanguageContext';
 import { Navbar } from './components/Navbar';
 import { BookFormModal } from './components/BookFormModal';
 import { BookDetailModal } from './components/BookDetailModal';
@@ -8,7 +9,7 @@ import { ConfirmModal } from './components/ConfirmModal';
 import { CartDrawer } from './components/CartDrawer';
 import { RefreshCw } from 'lucide-react';
 
-// PERFORMANS OPTİMİZASYONU: Code-splitting & Lazy Loading (Sayfaları ihtiyaç anında yükleme)
+// PERFORMANS OPTİMİZASYONU: Code-splitting & Lazy Loading
 const DashboardPage = lazy(() => import('./pages/DashboardPage').then(m => ({ default: m.DashboardPage })));
 const BooksPage = lazy(() => import('./pages/BooksPage').then(m => ({ default: m.BooksPage })));
 const BookDetailPage = lazy(() => import('./pages/BookDetailPage').then(m => ({ default: m.BookDetailPage })));
@@ -65,9 +66,11 @@ function AppContent() {
 export default function App() {
   return (
     <BrowserRouter>
-      <BookProvider>
-        <AppContent />
-      </BookProvider>
+      <LanguageProvider>
+        <BookProvider>
+          <AppContent />
+        </BookProvider>
+      </LanguageProvider>
     </BrowserRouter>
   );
 }

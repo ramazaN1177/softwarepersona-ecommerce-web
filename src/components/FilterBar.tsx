@@ -1,6 +1,7 @@
 import React from 'react';
 import { Search, Filter, X, ArrowUpDown, RotateCcw } from 'lucide-react';
 import { useBookContext, type SortOption } from '../context/BookContext';
+import { useLanguage } from '../context/LanguageContext';
 import type { Category } from '../types/book';
 
 const categories: Category[] = [
@@ -28,6 +29,8 @@ export const FilterBar: React.FC = () => {
     books
   } = useBookContext();
 
+  const { t } = useLanguage();
+
   const isFilterActive = searchQuery !== '' || selectedCategory !== 'Tüm Kategoriler' || sortOption !== 'newest' || minPrice !== '' || maxPrice !== '';
 
   return (
@@ -45,7 +48,7 @@ export const FilterBar: React.FC = () => {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Kitap adı veya yazar ara..."
+            placeholder={t('search_placeholder')}
             className="w-full pl-10 pr-10 py-2.5 bg-[#faf7f2] border border-[#e2d5c3] rounded-xl text-[#3d2b1f] placeholder-[#a89485] focus:outline-none focus:ring-2 focus:ring-[#8b5e34] text-sm transition"
           />
           {searchQuery && (
@@ -58,14 +61,14 @@ export const FilterBar: React.FC = () => {
           )}
         </div>
 
-        {/* Fiyat Aralığı Filtresi (Min - Max ₺) */}
+        {/* Fiyat Aralığı Filtresi (Min - Max) */}
         <div className="md:col-span-4 flex items-center space-x-2">
           <div className="relative flex-1">
             <input
               type="number"
               value={minPrice}
               onChange={(e) => setMinPrice(e.target.value)}
-              placeholder="Min ₺"
+              placeholder={t('price_min')}
               className="w-full px-3 py-2 bg-[#faf7f2] border border-[#e2d5c3] rounded-xl text-xs text-[#3d2b1f] placeholder-[#a89485] focus:outline-none focus:ring-2 focus:ring-[#8b5e34]"
             />
           </div>
@@ -75,7 +78,7 @@ export const FilterBar: React.FC = () => {
               type="number"
               value={maxPrice}
               onChange={(e) => setMaxPrice(e.target.value)}
-              placeholder="Max ₺"
+              placeholder={t('price_max')}
               className="w-full px-3 py-2 bg-[#faf7f2] border border-[#e2d5c3] rounded-xl text-xs text-[#3d2b1f] placeholder-[#a89485] focus:outline-none focus:ring-2 focus:ring-[#8b5e34]"
             />
           </div>
@@ -92,11 +95,11 @@ export const FilterBar: React.FC = () => {
               onChange={(e) => setSortOption(e.target.value as SortOption)}
               className="w-full pl-9 pr-3 py-2.5 bg-[#faf7f2] border border-[#e2d5c3] rounded-xl text-xs font-bold text-[#3d2b1f] focus:outline-none focus:ring-2 focus:ring-[#8b5e34]"
             >
-              <option value="newest">En Yeniler</option>
-              <option value="price-asc">Fiyat: Düşükten Yükseğe</option>
-              <option value="price-desc">Fiyat: Yüksekten Düşüğe</option>
-              <option value="rating">En Yüksek Puanlılar</option>
-              <option value="stock">En Çok Stok</option>
+              <option value="newest">{t('sort_newest')}</option>
+              <option value="price-asc">{t('sort_price_asc')}</option>
+              <option value="price-desc">{t('sort_price_desc')}</option>
+              <option value="rating">{t('sort_rating')}</option>
+              <option value="stock">{t('sort_stock')}</option>
             </select>
           </div>
         </div>
@@ -114,6 +117,7 @@ export const FilterBar: React.FC = () => {
 
           {categories.map((category) => {
             const count = category === 'Tüm Kategoriler' ? books.length : books.filter(b => b.category === category).length;
+            const categoryLabel = category === 'Tüm Kategoriler' ? t('category_all') : category;
             return (
               <button
                 key={category}
@@ -124,7 +128,7 @@ export const FilterBar: React.FC = () => {
                     : 'bg-[#f4ebe1] text-[#543d2b] hover:bg-[#e9ded0] border border-[#e5dac8]'
                 }`}
               >
-                <span>{category}</span>
+                <span>{categoryLabel}</span>
                 <span className={`px-1.5 py-0.2 rounded-md text-[10px] ${
                   selectedCategory === category ? 'bg-white/20 text-white' : 'bg-[#e6dccb] text-[#6f4e37]'
                 }`}>
@@ -142,7 +146,7 @@ export const FilterBar: React.FC = () => {
             className="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-[#fdf2f2] hover:bg-[#f8d7da] text-[#c0392b] text-xs font-bold rounded-xl border border-[#f8d7da] transition"
           >
             <RotateCcw className="h-3.5 w-3.5" />
-            <span>Filtreleri Temizle</span>
+            <span>{t('reset_filters')}</span>
           </button>
         )}
 
