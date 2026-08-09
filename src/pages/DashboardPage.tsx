@@ -9,7 +9,9 @@ import {
   Clock,
   PieChart as PieChartIcon,
   BookOpen,
-  Plus
+  Plus,
+  User,
+  Calendar
 } from 'lucide-react';
 import { useBookContext } from '../context/BookContext';
 import { Link, useNavigate } from 'react-router-dom';
@@ -239,7 +241,7 @@ export const DashboardPage: React.FC = () => {
 
       </div>
 
-      {/* En Çok Satan Kitaplar Leaderboard (MOBİL UYUMLU KAYDIRMA TABLOSU) */}
+      {/* En Çok Satan Kitaplar Leaderboard */}
       <div className="bg-white p-4 sm:p-6 rounded-2xl border border-[#e8dfd1] shadow-sm">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center space-x-2">
@@ -256,7 +258,6 @@ export const DashboardPage: React.FC = () => {
           </Link>
         </div>
 
-        {/* Taşmayı Önleyen Yatay Kaydırma Paneli */}
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs min-w-[640px]">
             <thead>
@@ -324,7 +325,7 @@ export const DashboardPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Son Sipariş Hareketleri (MOBİL UYUMLU KAYDIRMA TABLOSU) */}
+      {/* Son Sipariş Hareketleri (100% MOBİL UYUMLU DUAL LAYOUT) */}
       <div className="bg-white p-4 sm:p-6 rounded-2xl border border-[#e8dfd1] shadow-sm">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-2">
@@ -338,7 +339,42 @@ export const DashboardPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="overflow-x-auto">
+        {/* MOBİL GÖRÜNÜM KARTLARI (Telefon Ekranları İçin Özel Kart Tasarımı) */}
+        <div className="block sm:hidden space-y-3">
+          {recentOrders.map((order) => (
+            <div key={order.id} className="p-3.5 bg-[#faf7f2] rounded-xl border border-[#e8dfd1] space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="font-extrabold text-[#6f4e37] text-xs">{order.id}</span>
+                <span className={`px-2 py-0.5 rounded-lg text-[10px] font-bold ${
+                  order.status === 'Tamamlandı' ? 'bg-[#eaf3ed] text-[#2e6f40]' :
+                  order.status === 'Kargoda' ? 'bg-[#fdf3e7] text-[#9c5f25]' : 'bg-[#f4ebe1] text-[#6f4e37]'
+                }`}>
+                  {order.status}
+                </span>
+              </div>
+
+              <div className="text-xs font-bold text-[#3d2b1f] flex items-center space-x-1.5">
+                <User className="h-3.5 w-3.5 text-[#785942]" />
+                <span>{order.customer}</span>
+              </div>
+
+              <div className="text-xs text-[#543d2b] font-semibold bg-white p-2 rounded-lg border border-[#f2ebdc]">
+                Kitap: <span className="font-bold text-[#3d2b1f]">{order.book}</span>
+              </div>
+
+              <div className="flex items-center justify-between pt-1 text-[11px] text-[#8c7462]">
+                <div className="flex items-center space-x-1">
+                  <Calendar className="h-3 w-3" />
+                  <span>{order.date}</span>
+                </div>
+                <span className="font-bold text-[#3d2b1f] text-xs">{order.amount} ₺</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* MASAÜSTÜ VE TABLET GÖRÜNÜM TABLOSU */}
+        <div className="hidden sm:block overflow-x-auto">
           <table className="w-full text-left text-xs min-w-[580px]">
             <thead>
               <tr className="border-b border-[#e8dfd1] text-[#785942] uppercase font-bold text-[11px] whitespace-nowrap">
@@ -371,6 +407,7 @@ export const DashboardPage: React.FC = () => {
             </tbody>
           </table>
         </div>
+
       </div>
 
     </div>
