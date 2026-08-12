@@ -3,7 +3,7 @@ export type Language = 'tr' | 'en';
 export const translations = {
   tr: {
     // Navbar
-    app_title: 'Kitaplık',
+    app_title: 'Shelfy',
     app_subtitle_admin: 'Yönetici Platformu',
     app_subtitle_customer: 'Online Kitap Mağazası',
     nav_dashboard: 'Satış & Analiz',
@@ -107,12 +107,12 @@ export const translations = {
     btn_crop_save: 'Kırpmayı Tamamla ve Kullan',
 
     // Customer Banner
-    welcome_banner_title: 'Kitaplık Mağazasına Hoş Geldiniz!',
+    welcome_banner_title: 'Shelfy Mağazasına Hoş Geldiniz!',
     welcome_banner_desc: 'Aradığınız en popüler romanlar, yazılım kitapları ve klasik eserler en uygun fiyatlarla mağazamızda.'
   },
   en: {
     // Navbar
-    app_title: 'Kitaplık',
+    app_title: 'Shelfy',
     app_subtitle_admin: 'Admin Platform',
     app_subtitle_customer: 'Online Book Store',
     nav_dashboard: 'Sales & Analytics',
@@ -216,7 +216,7 @@ export const translations = {
     btn_crop_save: 'Crop & Use Image',
 
     // Customer Banner
-    welcome_banner_title: 'Welcome to Kitaplık Store!',
+    welcome_banner_title: 'Welcome to Shelfy Store!',
     welcome_banner_desc: 'Discover best-selling novels, software engineering guides, and timeless classics at unbeatable prices.'
   }
 };
