@@ -36,7 +36,7 @@ export const Navbar: React.FC = () => {
             <Link to={viewMode === 'admin' ? '/' : '/books'} className="flex items-center space-x-2.5 sm:space-x-3 group">
               <img 
                 src="/kitaplik-logo.png" 
-                alt="Shelfy Logo" 
+                alt="Bookpie Logo" 
                 className="h-9 w-9 sm:h-11 sm:w-11 object-contain rounded-xl drop-shadow-md group-hover:scale-105 transition duration-200"
               />
               <div>
